@@ -11,7 +11,7 @@ fetch(url)
     })
     .then((data) => {
         myName.textContent = data.member.name
-        console.log(data.member)
+        console.log(data)
     })
 
     .catch((error) => test.textContent = `Could not fetch verse: ${error}`);
@@ -45,16 +45,16 @@ for (b of btns) {
     });
 }
 
-function zoomIn() {
-    wallMonitor.classList.toggle('hide')
-    person.classList.toggle('transparant')
-    firstSection.classList.toggle('biggerIndex')
-    biggerMonitor.classList.toggle('biggerMonitor')
-    secondSection.classList.toggle('biggerTable')
-    table.classList.toggle('biggerTable')
-    thirdSection.classList.toggle('hide')
-    html.classList.toggle('overflow')
-}
+// function zoomIn() {
+//     wallMonitor.classList.toggle('hide')
+//     person.classList.toggle('transparant')
+//     firstSection.classList.toggle('biggerIndex')
+//     biggerMonitor.classList.toggle('biggerMonitor')
+//     secondSection.classList.toggle('biggerTable')
+//     table.classList.toggle('biggerTable')
+//     thirdSection.classList.toggle('hide')
+//     html.classList.toggle('overflow')
+// }
 
 
 var monitorInhoud = document.querySelector('section:first-of-type>button figure')
