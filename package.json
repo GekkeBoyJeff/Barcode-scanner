@@ -1,0 +1,19 @@
+{
+  "name": "diet-product-scanner",
+  "version": "1.0.0",
+  "description": "The core of the application should enable users to scan the barcode of products to view their contents. The rest is extra, I want to include users to favorite their items and setup a diet plan",
+  "main": "js/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GekkeBoyJeff/web-app-from-scratch-2223.git"
+  },
+  "author": "Jeffrey Ullers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GekkeBoyJeff/web-app-from-scratch-2223/issues"
+  },
+  "homepage": "https://github.com/GekkeBoyJeff/web-app-from-scratch-2223#readme"
+}
