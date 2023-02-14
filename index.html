@@ -10,8 +10,36 @@
 </head>
 
 <body>
-
-    <script src="js/app.js"></script>
+    <header>
+        <h1>QR Code Scanner</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Scan a QR Code</h2>
+            <p>Scan a QR code to see the result.</p>
+            <video id="video" autoplay></video>
+            <button>
+                Start
+            </button>
+            <button>
+                Stop
+            </button>
+        </section>
+    </main>
+    <footer>
+        <p>QR Code Scanner</p>
+    </footer>
+    <script src="js/app.js" type="module"></script>
+    <!-- polyfill -->
+    <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.11/dist/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.13/dist/index.js"></script>
+    <script>
+        try {
+            window['BarcodeDetector'].getSupportedFormats()
+        } catch {
+            window['BarcodeDetector'] = barcodeDetectorPolyfill.BarcodeDetectorPolyfill
+        }
+    </script>
 </body>
 
 </html>
