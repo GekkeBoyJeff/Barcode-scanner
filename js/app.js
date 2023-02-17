@@ -3,7 +3,7 @@
 // Get the video element
 const video = document.querySelector('#video')
 
-let formats;
+let formats; //wat voor barcode / qr code ze kunnen scannen
 // Save all formats to formats var 
 BarcodeDetector.getSupportedFormats().then(arr => formats = arr);
 // Create new barcode detector with all supported formats
@@ -18,7 +18,11 @@ const detectCode = () => {
 
         for (const barcode of codes) {
             // Log the barcode to the console
-            console.log(barcode);
+            // console.log(barcode);
+            console.log(barcode.rawValue)
+            const barcodeValue = barcode.rawValue
+            fetchBarcodeData(barcodeValue)
+            return;
         }
     }).catch(err => {
         // Log an error if one happens
@@ -27,6 +31,12 @@ const detectCode = () => {
 }
 
 var startCamera = document.querySelector('section > button:first-of-type')
+var stopCamera = document.querySelector('section > button:last-of-type').addEventListener('click', () => {
+    const mediaStream = video.srcObject;
+    const tracks = mediaStream.getTracks();
+    tracks.forEach(track => track.stop())
+    // https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297
+})
 
 
 startCamera.addEventListener('click', () => {
@@ -34,7 +44,7 @@ startCamera.addEventListener('click', () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         // Use video without audio
         const constraints = {
-            video: true,
+            video: true, /* StudentAssistent: deze op false zetten als product is gevonden / op stop is gedrukt. */
             audio: false
         }
 
@@ -46,8 +56,22 @@ startCamera.addEventListener('click', () => {
         }).then(stream => video.srcObject = stream)
             .catch(console.error);
 
-        setInterval(detectCode, 100);
+        setInterval(detectCode, 1000);
     }
 })
 
+function fetchBarcodeData(barcodeValue) {
+    var testUrl = `https://world.openfoodfacts.org/api/v0/product/${barcodeValue}.json`
+    console.log(testUrl)
 
+    fetch(testUrl)
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            return res.json()
+        })
+        .then((data) => {
+            console.log(data)
+        })
+}
