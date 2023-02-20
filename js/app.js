@@ -4,8 +4,8 @@ import { router } from './modules/router.js'
 import { enableCamera } from './modules/enableCamera.js'
 import { disableCamera } from './modules/disableCamera.js'
 
-var homeBackButton = document.querySelector('section:nth-of-type(2) > button:first-of-type')
-var startCamera = document.querySelector('section:nth-of-type(2) > button:nth-of-type(2)')
+var homeBackButton = document.querySelector('header > button:first-of-type')
+var startCamera = document.querySelector('section:nth-of-type(2) > button:first-of-type')
 var stopCamera = document.querySelector('section:nth-of-type(2) > button:last-of-type')
 
 document.querySelector('section:first-of-type > button:first-of-type').addEventListener('click', () => { /* Go to profile page */
@@ -19,16 +19,9 @@ homeBackButton.addEventListener('click', () => {
     window.location.hash = '#home';
 })
 
+startCamera.addEventListener('click', enableCamera)
 
-
-startCamera.addEventListener('click', () => {
-    enableCamera();
-
-})
-
-stopCamera.addEventListener('click', () => {
-    disableCamera();
-})
+stopCamera.addEventListener('click', disableCamera)
 
 window.onload = router(); /* als de pagina laadt, voer dan de router functie uit */
 
