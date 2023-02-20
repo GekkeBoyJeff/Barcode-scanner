@@ -11,10 +11,19 @@
 
 <body>
     <header>
-        <h1>QR Code Scanner</h1>
+        <h1>Diet scan</h1>
     </header>
     <main>
-        <section>
+        <section> <!-- Home page -->
+            <button>
+                Profile
+            </button>
+            <button>
+                Scan
+            </button>
+        </section>
+        <section> <!-- Barcode scanner page -->
+            <button>back</button>
             <h2>Scan a QR Code</h2>
             <p>Scan a QR code to see the result.</p>
             <video id="video" autoplay></video>
@@ -24,10 +33,40 @@
             <button>
                 Stop
             </button>
+            <label>
+                <input type="search">
+            </label>
+            <input type="submit" value="">
+        </section>
+        <section> <!-- product page-->
+            <div>
+                <button>
+                    Favorite <!-- Favorite button -->
+                </button>
+            </div>
+            <button>back</button>
+            <figure>
+                <img src="" alt="">
+                <figcaption>
+                    <p>Broncode</p>
+                    <p></p> <!-- ean number -->
+                    <p></p> <!-- Category -->
+                </figcaption>
+            </figure>
+            <h2>Result</h2>
+
         </section>
     </main>
     <footer>
-        <p>QR Code Scanner</p>
+        <button>
+            <img src="" alt="">
+        </button>
+        <button>
+            <img src="" alt="">
+        </button>
+        <button>
+            <img src="" alt="">
+        </button>
     </footer>
     <script src="js/app.js" type="module"></script>
     <!-- polyfill -->

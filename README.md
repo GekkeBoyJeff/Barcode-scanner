@@ -227,3 +227,170 @@ var stopCamera = document.querySelector('section > button:last-of-type').addEven
 ```
 To disable the stream I added a button which stops the track of the mediastream which is in the svideo source object.
 I used a guide for this : [click this link](https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297)
+
+# Week 2 Refactor
+The teachers directly started with telling us to refactor our code.
+They will be talking about Routes en Modules
+
+## Routes
+```
+This is just like server side programming.
+```
+_'Sophie van der Burg'_
+
+### Hash router
+We're going to try to change the state of the application by changing the hash of the url. 
+The hash of the page is an ID to which you can navigate to.
+
+```JS
+window.addEventListener('hashchange', function(){
+	console.log('hash has changed')
+}, false);
+```
+- false disables javascript bubbling (it disables)
+if the hash changed then do the following switch case
+
+they showed an example with a switch case statement to change the content based on the hash in the URL
+```JS
+switch (hash){
+	case '#Home':
+		routerview.innerHTML('')
+		break;
+	case '#'
+}
+```
+
+
+```
+It is almost like we're building our own framework
+```
+_'Lotte Koblens'_
+
+# Modules
+The thing is that there are a lot of things going on in our code. We do everything in one single function instead of  seperating our functions so that we can do stuff with it.
+We need to **Have structure** by making **ES Modules** 
+
+## Es modules
+Split code into seperate files and import them when needed.
+- Only main script in HTML
+- export / import bindings
+- Modules always execute in strict mode
+	- Script mode is like an angry teacher grading you. for example: you can't change a veriable before setting the variable.
+- defer by default
+- scoped by default.
+	- **What is a scope?**
+		- Where does a variable live?
+		- you can't access variables from other modules.
+
+They gave an example on how to import functions
+```JS
+import { getData } from './api.js'
+import { render } from './render.js'
+import { loader } from './loader.js'
+import { updateUI } from './ui.js'
+```
+
+## Start with adding content to the app.
+I wasn't far enough with my application to start implementing everything in the lesson of this week yet. So I continued with my application. For a start I wanted to set up a good structure for my HTML.
+
+```HTML
+    <main>
+        <section> <!-- Home page -->
+            <button>
+                Profile
+            </button>
+            <button>
+                Scan
+            </button>
+        </section>
+        <section> <!-- Barcode scanner page -->
+            <button>back</button>
+            <h2>Scan a QR Code</h2>
+            <p>Scan a QR code to see the result.</p>
+            <video id="video" autoplay></video>
+            <button>
+                Start
+            </button>
+            <button>
+                Stop
+            </button>
+            <label>
+                <input type="search">
+            </label>
+            <input type="submit" value="">
+        </section>
+        <section> <!-- product page-->
+            <div>
+                <button>
+                    Favorite <!-- Favorite button -->
+                </button>
+            </div>
+            <button>back</button>
+            <figure>
+                <img src="" alt="">
+                <figcaption>
+                    <p>Broncode</p>
+                    <p></p> <!-- ean number -->
+                    <p></p> <!-- Category -->
+                </figcaption>
+            </figure>
+            <h2>Result</h2>
+        </section>
+    </main>
+```
+
+Without any CSS it didn't really look that well yet but functionality needed to be added first.
+
+Before making any big changes any further I wanted to make different modules of my code. this was easy to do luckily. Because I was able to put everything into modules, the code of my main javascript file looked really clean.
+
+```JS
+import { router } from './modules/router.js'
+import { enableCamera } from './modules/enableCamera.js'
+import { disableCamera } from './modules/disableCamera.js'
+
+var startCamera = document.querySelector('section > button:first-of-type')
+var stopCamera = document.querySelector('section > button:last-of-type')
+
+startCamera.addEventListener('click', () => {
+    enableCamera();
+})
+
+stopCamera.addEventListener('click', () => {
+    disableCamera();
+})
+
+window.onload = router(); /* als de pagina laadt, voer dan de router functie uit */
+
+window.addEventListener('hashchange', function () {
+    router()
+}, false);
+```
+
+The function below executes when the page is loaded. This calls the router function which is in a module that checks what the hash is of the page.
+```JS 
+window.onload = router();
+``` 
+
+```JS
+/* router.js */
+
+export function router() {
+    switch (window.location.hash) {
+        case '#home':
+            console.log('home')
+            break;
+        case '#scan':
+            console.log('scan')
+            break;
+        case '#product':
+            console.log('product')
+            break;
+        default:
+            console.log('default')
+            break;
+    }
+}
+```
+
+With this, I could do different functions per page (or rather per case).
+
