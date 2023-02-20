@@ -141,7 +141,7 @@ section:first-of-type button {
 
 section:nth-of-type(2) {
     overflow-y: scroll;
-    padding-bottom: 5em;
+    padding-bottom: 7em;
 }
 
 section:nth-of-type(2) div {

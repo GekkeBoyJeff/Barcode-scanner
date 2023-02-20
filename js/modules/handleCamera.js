@@ -16,6 +16,7 @@ export async function enableCamera() {
             video.srcObject = stream;
             video.play();
 
+
             // https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/getSettings
             // https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/getCapabilities
             const track = stream.getVideoTracks()[0];
@@ -31,16 +32,17 @@ export async function enableCamera() {
             input.step = capabilities.focusDistance.step;
             input.value = track.getSettings().focusDistance;
 
-            // https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/onended
-            input.oninput = function (event) {
-                // https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/applyConstraints
-                track.applyConstraints({
-                    advanced: [{
-                        focusMode: 'manual',
-                        focusDistance: event.target.value
-                    }]
-                });
-            };
+            if (!input.classList.contains('hidden')) {
+                input.oninput = function (event) {
+                    // https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/applyConstraints
+                    track.applyConstraints({
+                        advanced: [{
+                            focusMode: 'manual',
+                            focusDistance: event.target.value
+                        }]
+                    });
+                };
+            }
 
             setInterval(detectCode, 1000);
         }
@@ -57,6 +59,12 @@ export async function disableCamera() {
     // https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297
 }
 
-document.querySelector('section:nth-of-type(2) > button:last-of-type').addEventListener('click', () => { /* Toggle slider */
+const showSlider = document.querySelector('section:nth-of-type(2) > button:last-of-type').addEventListener('click', () => { /* Toggle slider */
     var slider = document.querySelector('section:nth-of-type(2) > input:last-of-type').classList.toggle('hidden')
+
+    disableCamera()
+    enableCamera();
+
+    // https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/onended
+
 })
