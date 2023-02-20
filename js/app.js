@@ -4,8 +4,22 @@ import { router } from './modules/router.js'
 import { enableCamera } from './modules/enableCamera.js'
 import { disableCamera } from './modules/disableCamera.js'
 
-var startCamera = document.querySelector('section > button:first-of-type')
-var stopCamera = document.querySelector('section > button:last-of-type')
+var homeBackButton = document.querySelector('section:nth-of-type(2) > button:first-of-type')
+var startCamera = document.querySelector('section:nth-of-type(2) > button:nth-of-type(2)')
+var stopCamera = document.querySelector('section:nth-of-type(2) > button:last-of-type')
+
+document.querySelector('section:first-of-type > button:first-of-type').addEventListener('click', () => { /* Go to profile page */
+    window.location.hash = '#profile';
+})
+document.querySelector('section:first-of-type > button:last-of-type').addEventListener('click', () => { /* Go to scan page */
+    window.location.hash = '#scan';
+})
+
+homeBackButton.addEventListener('click', () => {
+    window.location.hash = '#home';
+})
+
+
 
 startCamera.addEventListener('click', () => {
     enableCamera();
