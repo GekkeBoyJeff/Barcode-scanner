@@ -50,14 +50,20 @@ main {
 }
 
 header {
-    height: 10%;
-    max-height: 10%;
-    padding: 1em;
+    /* height: 10%; */
+    /* min-height: 10%; */
+    padding: 1em 1em 0 1em;
     margin: 0;
     /* background-color: var(--background-color); */
     display: flex;
     align-items: center;
+    flex-direction: column;
 }
+
+header:has(> .hidden) {
+    padding: 1em;
+}
+
 
 header::before {
     content: '';
@@ -145,7 +151,7 @@ section:first-of-type {
 section:first-of-type button {
     flex-grow: 1;
     flex-shrink: 1;
-    flex-basis: 16em;
+    flex-basis: 10em;
     border-radius: .5em;
     height: 10em;
     color: var(--header-color);
@@ -153,17 +159,19 @@ section:first-of-type button {
 
 section:nth-of-type(2) {
     overflow-y: scroll;
-    padding-bottom: 7em;
+    padding-bottom: 12em;
 }
 
-section:nth-of-type(2) div {
+header div {
     display: flex;
     width: 100%;
     height: 3em;
-    border-bottom: .2em solid var(--background-color);
+    background: var(--darker-background-color);
+    border-radius: .5em;
+    margin: 1em 0em;
 }
 
-section:nth-of-type(2) div input[type="submit"] {
+header div input[type="submit"] {
     width: 20%;
     font-size: 1.5em;
 }
@@ -173,12 +181,14 @@ section:nth-of-type(2) div input[type="submit"]:hover {
     cursor: pointer;
 }
 
-section:nth-of-type(2) div label input {
-    height: 100%;
+div label input[type="search"] {
     width: 100%;
+    height: 100%;
+    padding: 0 .5em;
+    font-size: 1em;
 }
 
-section:nth-of-type(2) div label {
+div label {
     width: 100%;
 }
 
