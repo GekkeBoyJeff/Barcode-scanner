@@ -396,5 +396,8 @@ With this, I could do different functions per page (or rather per case).
 
 After this I decided to do some more styling. I started adding some css, however I am still not happy with the design. I added a color scheme which updates some variables.
 ![](./assets/week2designPhase.png)
-In the image above you can see the black theme with the ''bit' of styling.
+In the image above you can see the black theme with the ''bit' of styling. On mobile however you can see the difference even better. I changed the layout and colors a bit. I also added the static bottom bar. 
 
+Before             |  After
+:-------------------------:|:-------------------------:
+![](./assets/w2D1Before.png)  | ![](./assets/w2D1After.png) 
