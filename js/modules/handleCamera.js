@@ -57,9 +57,6 @@ export async function disableCamera() {
     // https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297
 }
 
-function cameraFocus() {
-    video.srcObject = stream;
-
-
-
-}
+document.querySelector('section:nth-of-type(2) > button:last-of-type').addEventListener('click', () => { /* Toggle slider */
+    var slider = document.querySelector('section:nth-of-type(2) > input:last-of-type').classList.toggle('hidden')
+})
