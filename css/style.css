@@ -184,4 +184,8 @@ section:nth-of-type(2) button:nth-of-type(n+2) {
     button {
         color: white;
     }
+
+    section:nth-of-type(2) button:nth-of-type(n+2) {
+        color: var(--darker-background-color)
+    }
 }
