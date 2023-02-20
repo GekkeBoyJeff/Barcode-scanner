@@ -98,8 +98,6 @@ video#video {
     min-height: 15em;
     background-color: black;
     transition: .5s;
-    object-fit: cover;
-    border-radius: .5em;
 }
 
 section {
