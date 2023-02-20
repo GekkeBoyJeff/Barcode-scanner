@@ -57,10 +57,3 @@ section:first-of-type button {
         --text-color: #313131;
     }
 }
-
-button {
-    height: 3em;
-    width: 10em;
-    background-color: green;
-    margin: 2em;
-}
