@@ -23,10 +23,6 @@
     width: 0px;
 }
 
-input[type="range"] {
-    margin-bottom: 7em;
-}
-
 button:hover {
     cursor: pointer;
 }
@@ -145,6 +141,7 @@ section:first-of-type button {
 
 section:nth-of-type(2) {
     overflow-y: scroll;
+    padding-bottom: 5em;
 }
 
 section:nth-of-type(2) div {
