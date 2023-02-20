@@ -71,6 +71,7 @@ footer {
     border-radius: .5em;
     backdrop-filter: blur(1em);
     flex-direction: row;
+    width: -moz-available;
     width: -webkit-fill-available;
     justify-content: center;
 }
@@ -97,6 +98,8 @@ video#video {
     min-height: 15em;
     background-color: black;
     transition: .5s;
+    object-fit: cover;
+    border-radius: .5em;
 }
 
 section {
@@ -134,7 +137,26 @@ section:first-of-type button {
     height: 10em;
 }
 
+section:nth-of-type(2) div {
+    border-radius: .5em;
+    display: flex;
+    width: 100%;
+    background-color: var(--darker-background-color);
+    height: 3em;
+}
 
+section:nth-of-type(2) div input[type="submit"] {
+    width: 20%;
+}
+
+section:nth-of-type(2) div label input {
+    height: 100%;
+    width: 100%;
+}
+
+section:nth-of-type(2) div label {
+    width: 100%;
+}
 
 @media (prefers-color-scheme: light) {
     :root {

@@ -1,8 +1,8 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Barcode_Detection_API 
 
 import { router } from './modules/router.js'
-import { enableCamera } from './modules/enableCamera.js'
-import { disableCamera } from './modules/disableCamera.js'
+import { enableCamera } from './modules/handleCamera.js'
+import { disableCamera } from './modules/handleCamera.js'
 
 var homeBackButton = document.querySelector('header > button:first-of-type')
 var startCamera = document.querySelector('section:nth-of-type(2) > button:first-of-type')
