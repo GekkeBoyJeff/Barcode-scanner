@@ -29,3 +29,12 @@ window.addEventListener('hashchange', function () {
     router()
 }, false);
 
+var homeButton = document.querySelector('footer > button:first-of-type').addEventListener('click', () => { /* Go to profile page */
+    window.location.hash = '#home';
+})
+var scanButton = document.querySelector('footer > button:nth-of-type(2)').addEventListener('click', () => { /* Go to profile page */
+    window.location.hash = '#scan';
+})
+var profileButton = document.querySelector('footer > button:last-of-type').addEventListener('click', () => { /* Go to profile page */
+    window.location.hash = '#profile';
+})
