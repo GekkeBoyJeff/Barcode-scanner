@@ -1,9 +1,11 @@
 :root {
-    --background-color: #1a1a1a;
-    --darker-background-color: #313131;
+    --background-color: #050508;
+    --darker-background-color: #0d0d16;
     --text-color: #f5f5f5;
-    --accent-color: #176aa7;
-    --darker-accent-color: #0f4c7a;
+    --solid-accent-color: rgb(85 5 118);
+    --accent-color: linear-gradient(309deg, rgb(85 5 118) 0%, rgb(28 32 167) 100%);
+    --darker-accent-color: #a068ff;
+    --blurred-bg-color: rgb(47 47 47 / 45%);
 }
 
 * {
@@ -16,7 +18,6 @@
     color: var(--text-color);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     transition: .5s;
-    /* font-size: 1.05em; */
 }
 
 ::-webkit-scrollbar {
@@ -25,6 +26,7 @@
 
 button:hover {
     cursor: pointer;
+    filter: hue-rotate(35deg) contrast(1.5);
 }
 
 body {
@@ -32,22 +34,29 @@ body {
     height: 100dvh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .hidden {
     display: none !important;
 }
 
-header,
-main,
-footer {
-    margin: 1em;
+main {
+    padding: 1em;
+    min-height: 90%;
+    background-color: var(--darker-background-color);
+    border-radius: 1em 1em 0 0;
+    overflow-y: scroll;
 }
 
 header {
     height: 10%;
     max-height: 10%;
-    margin: 1em 1em 0em 1em;
+    padding: 1em;
+    margin: 0;
+    /* background-color: var(--background-color); */
+    display: flex;
+    align-items: center;
 }
 
 header::before {
@@ -57,7 +66,7 @@ header::before {
     left: -2em;
     height: 10em;
     width: 10em;
-    background-color: var(--darker-accent-color);
+    /* background-color: var(--darker-accent-color); */
     z-index: -1;
     filter: blur(8em);
 }
@@ -71,7 +80,7 @@ footer {
     bottom: 0em;
     left: 0;
     display: flex;
-    background-color: rgb(47 47 47 / 45%);
+    background-color: var(--blurred-bg-color);
     border-radius: .5em;
     backdrop-filter: blur(.4em);
     flex-direction: row;
@@ -82,6 +91,7 @@ footer {
     height: 10dvh;
     min-height: 4em;
     align-items: center;
+    margin: 1em;
 }
 
 footer>button {
@@ -93,11 +103,6 @@ footer>button:hover {
     box-shadow: 0 4px var(--accent-color);
     font-weight: bold;
     font-size: 1.05em;
-}
-
-
-main {
-    height: 90%;
 }
 
 video#video {
@@ -114,19 +119,19 @@ section {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1em;
+    padding-top: 1em;
 }
 
 
 section>button {
     flex: 1 1 10em;
-    background-color: var(--darker-accent-color);
+    background: var(--accent-color);
     height: 3em;
     border-radius: .5em;
+    color: var(--text-color);
 }
 
-section>button:hover {
-    background-color: var(--accent-color);
-}
+section>button:hover {}
 
 
 section:first-of-type {
@@ -134,14 +139,16 @@ section:first-of-type {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1em;
+    margin-bottom: 12em;
 }
 
 section:first-of-type button {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 16em;
-    border-radius: .2em;
+    border-radius: .5em;
     height: 10em;
+    color: var(--header-color);
 }
 
 section:nth-of-type(2) {
@@ -150,15 +157,20 @@ section:nth-of-type(2) {
 }
 
 section:nth-of-type(2) div {
-    border-radius: .5em;
     display: flex;
     width: 100%;
-    background-color: var(--darker-background-color);
     height: 3em;
+    border-bottom: .2em solid var(--background-color);
 }
 
 section:nth-of-type(2) div input[type="submit"] {
     width: 20%;
+    font-size: 1.5em;
+}
+
+section:nth-of-type(2) div input[type="submit"]:hover {
+    font-size: 2em;
+    cursor: pointer;
 }
 
 section:nth-of-type(2) div label input {
@@ -171,21 +183,39 @@ section:nth-of-type(2) div label {
 }
 
 section:nth-of-type(2) button:nth-of-type(n+2) {
-    background-color: unset;
-    border: .2em solid var(--darker-accent-color);
+    background: unset;
+    border: .2em solid var(--solid-accent-color);
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        --background-color: #f5f5f5;
+        --background-color: #c7e7ff;
         --text-color: #313131;
+        --header-color: #06365a;
+        --solid-accent-color: rgb(97 136 165);
+        --darker-background-color: white;
+        --accent-color: linear-gradient(135deg, rgba(199, 231, 255, 1) 0%, rgba(82, 181, 255, 1) 100%);
+        --blurred-bg-color: rgb(179 222 255 / 77%);
     }
 
     button {
-        color: white;
+        color: var(--header-color);
+    }
+
+    button:hover {
+        filter: hue-rotate(-25deg);
     }
 
     section:nth-of-type(2) button:nth-of-type(n+2) {
-        color: var(--darker-background-color)
+        color: var(--header-color);
     }
+}
+
+h1 {
+    color: var(--header-color);
+}
+
+button {
+    font-size: 16px;
+    font-weight: 700;
 }
