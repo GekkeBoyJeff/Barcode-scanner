@@ -23,6 +23,7 @@ homeBackButton.addEventListener('click', () => {
 
 startCamera.addEventListener('click', () => {
     enableCamera();
+
 })
 
 stopCamera.addEventListener('click', () => {
