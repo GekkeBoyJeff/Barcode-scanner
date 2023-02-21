@@ -401,3 +401,173 @@ In the image above you can see the black theme with the ''bit' of styling. On mo
 Before             |  After
 :-------------------------:|:-------------------------:
 ![](./assets/w2D1Before.png)  | ![](./assets/w2D1After.png) 
+
+## More visual changes
+
+home             |  scan
+:-------------------------:|:-------------------------:
+![](./assets/homeDesignFinal.png) ![](./assets/homeFinalDesignWhite.png) | ![](./assets/scanDesignFinal.png) ![](./assets/searchFinalDesignWhite.png)
+
+I added custom properties, support for black and white theme and a max-width for the content. 
+```CSS
+:root {
+    --background-color: #020202;
+    --darker-background-color: #0d0d16;
+    --text-color: #f5f5f5;
+    --solid-accent-color: rgb(85 5 118);
+    --accent-color: linear-gradient(309deg, rgb(85 5 118) 0%, rgb(28 32 167) 100%);
+    --darker-accent-color: #a068ff;
+    --blurred-bg-color: rgb(47 47 47 / 45%);
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --background-color: #c7e7ff;
+        --text-color: #313131;
+        --header-color: #06365a;
+        --solid-accent-color: rgb(97 136 165);
+        --darker-background-color: white;
+        --accent-color: linear-gradient(135deg, rgba(199, 231, 255, 1) 0%, rgba(82, 181, 255, 1) 100%);
+        --blurred-bg-color: rgb(179 222 255 / 77%);
+    }
+
+    button {
+        color: var(--header-color);
+    }
+
+    button:hover {
+        filter: hue-rotate(-25deg);
+    }
+
+    section:nth-of-type(2) button:nth-of-type(n+2) {
+        color: var(--header-color);
+    }
+
+    header {
+        background: var(--background-color);
+    }
+}
+```
+
+While setting up the theme I noticed that my camera at home sucks. it keeps losing focus. Because this might be a problem for others I thought I could implement a custom slider which changes the focus.
+
+```JS
+// https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/getSettings
+// https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/getCapabilities
+// Get camera track and capabilities
+            const track = stream.getVideoTracks()[0];
+            const capabilities = track.getCapabilities();
+
+            // Check if focus distance is supported or not
+            if (!capabilities.focusMode) {
+                return;
+            }
+  
+            // Check if focus distance setting is supported or not
+            // https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackCapabilities/focusDistance
+            const input = document.querySelector('input[type="range"]');
+            input.min = capabilities.focusDistance.min;
+            input.max = capabilities.focusDistance.max;
+            input.step = capabilities.focusDistance.step;
+            input.value = track.getSettings().focusDistance;
+  
+            // Add event listener to update focus distance
+            if (!input.classList.contains('hidden')) {
+                input.oninput = function (event) {
+                    // https://developer.mozilla.org/en-US/docs/Web/API/MediaStreamTrack/applyConstraints
+                    track.applyConstraints({
+                        advanced: [{
+                            focusMode: 'manual',
+                            focusDistance: event.target.value
+                        }]
+                    });
+                };
+            }
+```
+So based on what the minimum and maximum focusdistance is, I set the min and max of the range slider. I constantly update the focusDistance when there is an input change for that slider.
+
+This works but not on every browser and device. 
+
+After this I wanted to make a loading state for the video since it can take a while for the video to load.
+
+I did this by setting a variable named isLoading to true at the start.
+I placed the rest in a try catch statement. The try catch statement also has a finally state which will run after one of these has run.
+
+```JS
+let isLoading = true;
+
+document.querySelector('section:nth-of-type(2) div video').classList.add('skeleton')
+
+/* ... code ... */
+
+	try{
+	/* getting and setting the video stream & media devices here... */
+	/* Also adding the slider from above */
+	}
+	catch(error){
+		console.log(error)
+	}
+	finally {
+		// Set loading flag to false
+		isLoading = false;
+	}
+}
+    if (!isLoading) {
+        document.querySelector('section:nth-of-type(2) div video').classList.remove('skeleton')
+        console.log('stop loading')
+    }
+```
+
+Which looks like this:
+![](./assets/scanPageLoadingState.png)
+It is an animation which is put on the div on top of the video element and on the video element itself
+```CSS
+.skeleton {
+    opacity: .7;
+    animation: skeleton-loading 1s linear infinite alternate;
+} 
+
+section:nth-of-type(2) div:has(> .skeleton)::after {
+    content: 'Loading...';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    filter: opacity(0.7);
+}
+  
+@keyframes skeleton-loading {
+    0% {
+        background: hsl(200, 20%, 70%)
+    }
+    100% {
+        background: hsl(200, 20%, 95%)
+    }
+}
+```
+
+## Refactor and Design
+Planning:
+- activity diagram
+
+### Activity diagram
+
+```
+When I was working at Blizzard I was making UI flow diagrams and I noticed that a few engineers were hanging the documents on their walls for reference
+``` 
+_'Stone librande'_
+
+### Stappenplan
+1. Sketch all states of your SPA and create a WireFlow
+2. Add a swimlane with url/hash for the different states
+3. Add a swimlane for the Control Flow, use psuedo code for all modules and methods
+4. Add your Activity Diagram to the readme
+5. Code.. code... code...
+
+0 Empty state -> 1 Loading state -> 
+
