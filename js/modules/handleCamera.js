@@ -2,12 +2,14 @@ import { detectCode } from './detectBarcode.js';
 
 export async function enableCamera() {
 
-    // Flag to indicate if the function is currently loading
-    let isLoading = true;
-    document.querySelector('section:nth-of-type(2) div video').classList.add('skeleton')
+
 
     // Check if device has camera
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+
+        // Flag to indicate if the function is currently loading
+        let isLoading = true;
+        document.querySelector('section:nth-of-type(2) div video').classList.add('skeleton')
 
         // Define constraints to use the camera without audio and with the back camera
         const constraints = {
@@ -61,17 +63,18 @@ export async function enableCamera() {
         }
         catch (error) {
             console.log(error);
+            // isLoading = false;
         }
         finally {
             // Set loading flag to false
             isLoading = false;
+            if (isLoading == false) {
+                document.querySelector('section:nth-of-type(2) div video').classList.remove('skeleton')
+                console.log('stop loading')
+            }
         }
     } else {
         console.log("getUserMedia is not supported");
-    }
-    if (!isLoading) {
-        document.querySelector('section:nth-of-type(2) div video').classList.remove('skeleton')
-        console.log('stop loading')
     }
 }
 
