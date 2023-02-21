@@ -14,6 +14,8 @@ export function fetchBarcodeData(barcodeValue) {
         })
         .then((data) => {
             console.log(data)
-            p.innerHTML = data.code
+            window.location.hash = `#product/${barcodeValue}`;
+            renderProduct(data)
+            // p.innerHTML = data.code
         })
 }
