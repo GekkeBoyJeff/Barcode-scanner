@@ -150,9 +150,6 @@ section>button {
     color: var(--text-color);
 }
 
-section>button:hover {}
-
-
 section:first-of-type {
     display: flex;
     flex-direction: row;
@@ -182,6 +179,7 @@ header div {
     background: var(--darker-background-color);
     border-radius: .5em;
     margin: 1em 0em;
+    overflow: hidden;
 }
 
 header div input[type="submit"] {
@@ -195,6 +193,7 @@ header div input[type="submit"] {
 
 header input[type="submit"]:hover {
     font-size: 2em;
+    background: var(--solid-accent-color);
 }
 
 div label input[type="search"] {
@@ -297,5 +296,58 @@ section:nth-of-type(2) div:has(> .skeleton)::after {
         min-height: unset;
         height: 80%;
         border-radius: .5em;
+    }
+}
+
+@media (max-height: 575.98px) and (orientation: landscape) {
+    body {
+        background: var(--background-color);
+        flex-direction: row;
+        margin: 0;
+        max-width: unset;
+        overflow: hidden;
+    }
+
+    header {
+        position: relative;
+        padding: 1em;
+        border-radius: 0;
+        flex: 0 0 30%;
+    }
+
+    footer {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        height: unset;
+    }
+
+    footer>button {
+        height: 3.1em;
+        line-height: 0;
+    }
+
+    main {
+        height: 100%;
+        border-radius: 0;
+        margin: 1em;
+        width: 100%;
+    }
+
+    main video {
+        height: 10em;
+        min-height: 11em;
+    }
+
+    section:nth-of-type(2) {
+        padding-bottom: 4em;
+    }
+
+    h1 {
+        font-size: 1.4em;
     }
 }
