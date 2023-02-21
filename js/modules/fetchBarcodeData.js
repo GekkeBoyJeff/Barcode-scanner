@@ -1,3 +1,5 @@
+import { renderProduct } from "./renderProduct.js"
+
 export function fetchBarcodeData(barcodeValue) {
     var testUrl = `https://world.openfoodfacts.org/api/v0/product/${barcodeValue}.json`
     console.log(testUrl)
