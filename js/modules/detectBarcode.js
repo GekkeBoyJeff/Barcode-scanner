@@ -18,7 +18,7 @@ export const detectCode = () => {
 
         for (const barcode of codes) {
             // Log the barcode to the console
-            // console.log(barcode);
+            console.log(barcode);
             console.log(barcode.rawValue)
             const barcodeValue = barcode.rawValue
             fetchBarcodeData(barcodeValue)

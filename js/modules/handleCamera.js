@@ -2,8 +2,6 @@ import { detectCode } from './detectBarcode.js';
 
 export async function enableCamera() {
 
-
-
     // Check if device has camera
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
