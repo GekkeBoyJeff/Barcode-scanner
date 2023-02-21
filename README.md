@@ -8,7 +8,7 @@ By using the API I can search for products by their barcode and get information 
 
 ## Current Status
 
-![](https://img.shields.io/github/issues/GekkeBoyJeff/Barcode-scanner) 
+![](https://img.shields.io/github/issues/GekkeBoyJeff/Barcode-scanner?style=for-the-badge) 
 
 ## Made with
 
