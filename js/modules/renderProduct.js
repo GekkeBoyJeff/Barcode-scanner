@@ -1,6 +1,6 @@
 export async function renderProduct(data) {
-    document.querySelector('header h1').textContent = data.product.product_name_nl
-    document.querySelector('section:nth-of-type(3) figcaption h2').textContent = data.product.product_name_nl
+    document.querySelector('header h1').textContent = data.product.brands
+    document.querySelector('section:nth-of-type(3) figcaption h2').textContent = data.product.brands
     document.querySelector('section:nth-of-type(3) figure figcaption p:first-of-type').textContent = data.product.name_en
     document.querySelector('section:nth-of-type(3) p:last-of-type').textContent = data.product.code
     document.querySelector('section:nth-of-type(3) figure img').src = data.product.image_front_url

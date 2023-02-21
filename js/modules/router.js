@@ -5,9 +5,9 @@ import { fetchBarcodeData } from './fetchBarcodeData.js'
 let headerText;
 
 export function router() {
-    const hash = window.location.hash;
-    const parts = hash.split('/');
-    switch (parts[0]) {
+    const hash = window.location.hash; // Get the hash from the URL
+    const parts = hash.split('/'); // Split the hash into an array of parts
+    switch (parts[0]) { // Check which part of the hash we're dealing with
         case '#home':
             console.log('home');
             hideSections();
@@ -29,7 +29,7 @@ export function router() {
             headerChange(headerText);
             document.querySelector('section:nth-of-type(3)').classList.remove('hidden');
             if (parts.length > 1) { // Check if there's an ID in the hash
-                const barcodeValue = parts[1];
+                const barcodeValue = parts[1]; // Get the ID from the hash
                 fetchBarcodeData(barcodeValue);
             }
             break;
