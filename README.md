@@ -404,6 +404,8 @@ Before             |  After
 
 ## More visual changes
 
+### Black and white theme
+
 home             |  scan
 :-------------------------:|:-------------------------:
 ![](./assets/homeDesignFinal.png) ![](./assets/homeFinalDesignWhite.png) | ![](./assets/scanDesignFinal.png) ![](./assets/searchFinalDesignWhite.png)
@@ -449,6 +451,7 @@ I added custom properties, support for black and white theme and a max-width for
 }
 ```
 
+### Focus slider
 While setting up the theme I noticed that my camera at home sucks. it keeps losing focus. Because this might be a problem for others I thought I could implement a custom slider which changes the focus.
 
 ```JS
@@ -488,6 +491,7 @@ So based on what the minimum and maximum focusdistance is, I set the min and max
 
 This works but not on every browser and device. 
 
+### loading state
 After this I wanted to make a loading state for the video since it can take a while for the video to load.
 
 I did this by setting a variable named isLoading to true at the start.
