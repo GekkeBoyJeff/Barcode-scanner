@@ -4,7 +4,7 @@ export async function enableCamera() {
 
     // Flag to indicate if the function is currently loading
     let isLoading = true;
-    document.querySelector('section:nth-of-type(2) > video').classList.toggle('skeleton')
+    document.querySelector('section:nth-of-type(2) div video').classList.toggle('skeleton')
 
     // Check if device has camera
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -70,7 +70,7 @@ export async function enableCamera() {
         console.log("getUserMedia is not supported");
     }
     if (!isLoading) {
-        document.querySelector('section:nth-of-type(2) > video').classList.toggle('skeleton')
+        document.querySelector('section:nth-of-type(2) div video').classList.toggle('skeleton')
         console.log('stop loading')
     }
 }
