@@ -35,6 +35,9 @@ body {
     display: flex;
     flex-direction: column;
     /* overflow: hidden; */
+    max-width: 50em;
+    margin: auto;
+    position: relative;
 }
 
 .hidden {
@@ -42,6 +45,7 @@ body {
 }
 
 main {
+    margin: 0 1em;
     padding: 1em;
     min-height: 90%;
     background-color: var(--darker-background-color);
@@ -53,14 +57,15 @@ header {
     /* height: 10%; */
     /* min-height: 10%; */
     padding: 1em 1em 0 1em;
-    margin: 0;
+    /* margin: 0; */
     background-color: #020202;
-    display: flex;
+    /* display: flex; */
     align-items: start;
     flex-direction: column;
     position: sticky;
     top: 0;
     border-radius: 0 0 1em 1em;
+    z-index: 1;
 }
 
 header:has(> .hidden) {
@@ -123,8 +128,9 @@ video {
     width: 100%;
     max-height: 25em;
     min-height: 15em;
-    background-color: black;
+    background-color: var(--background-color);
     transition: .5s;
+    border-radius: .5em;
     object-fit: cover;
 }
 
@@ -133,7 +139,6 @@ section {
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1em;
-    padding-top: 1em;
 }
 
 
