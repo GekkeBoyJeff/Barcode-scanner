@@ -286,3 +286,16 @@ section:nth-of-type(2) div:has(> .skeleton)::after {
         background: hsl(200, 20%, 95%)
     }
 }
+
+@media (min-width:50em) {
+    footer {
+        position: relative;
+        background-color: var(--darker-background-color);
+    }
+
+    main {
+        min-height: unset;
+        height: 80%;
+        border-radius: .5em;
+    }
+}
