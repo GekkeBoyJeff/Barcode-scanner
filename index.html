@@ -23,15 +23,15 @@
 
     </header>
     <main>
-        <section> <!-- Home page -->
-            <button>
+        <section id="home"> <!-- Home page -->
+            <a href="#profile">
                 Profile
-            </button>
-            <button>
+            </a>
+            <a href="#search">
                 Search
-            </button>
+            </a>
         </section>
-        <section> <!-- Barcode scanner page -->
+        <section id="search"> <!-- Barcode scanner page -->
             <!-- <h2>Scan a QR Code</h2>
             <p>Scan a QR code to see the result.</p> -->
             <div>
@@ -46,7 +46,7 @@
             <button>Click here for manual focus controls</button>
             <input type="range" class="hidden">
         </section>
-        <section> <!-- product page-->
+        <section id="product"> <!-- product page-->
             <figure>
                 <img src="" alt="">
                 <figcaption>
@@ -63,18 +63,18 @@
         </section>
     </main>
     <footer>
-        <button>
+        <a href="#home">
             home
             <img src="" alt="">
-        </button>
-        <button>
+        </a>
+        <a href="#search">
             search
             <img src="" alt="">
-        </button>
-        <button>
+        </a>
+        <a href="#profile">
             profile
             <img src="" alt="">
-        </button>
+        </a>
     </footer>
     <script src="js/app.js" type="module"></script>
     <!-- polyfill -->

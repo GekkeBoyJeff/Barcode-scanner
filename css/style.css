@@ -28,6 +28,7 @@ img {
     max-width: 100%;
 }
 
+a:hover,
 button:hover {
     cursor: pointer;
     filter: hue-rotate(35deg) contrast(1.5);
@@ -112,12 +113,12 @@ footer {
     margin: 1em;
 }
 
-footer>button {
+footer>a {
     width: 33%;
     height: 10dvh;
 }
 
-footer>button:hover {
+footer>a:hover {
     box-shadow: 0 4px var(--accent-color);
     font-weight: bold;
     font-size: 1.05em;
@@ -139,13 +140,18 @@ video {
 }
 
 section {
-    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1em;
+    overflow-y: scroll;
+    display: none;
 }
 
+section:target {
+    display: flex;
+}
 
+section>a,
 section>button {
     flex: 1 1 10em;
     background: var(--accent-color);
@@ -162,7 +168,7 @@ section:first-of-type {
     margin-bottom: 12em;
 }
 
-section:first-of-type button {
+section:first-of-type a {
     flex-grow: 1;
     flex-shrink: 1;
     flex-basis: 10em;
@@ -256,9 +262,13 @@ h1 {
     color: var(--header-color);
 }
 
+a,
 button {
     font-size: 16px;
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .skeleton {
@@ -405,6 +415,8 @@ figure button {
 figure button::before {
     content: '❤️';
     color: red;
-    width: 3em;
+    width: 0em;
+    margin-left: .5em;
     font-size: 2em;
+    margin-top: -.1em;
 }
