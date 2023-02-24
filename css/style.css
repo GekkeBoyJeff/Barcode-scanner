@@ -299,6 +299,22 @@ section:nth-of-type(2) div:has(> .skeleton)::after {
     }
 }
 
+@media (max-width:600px) {
+
+    footer {
+        position: relative;
+        background-color: var(--darker-background-color);
+        min-height: 15vh;
+    }
+
+    main {
+        min-height: unset;
+        height: 100%;
+        border-radius: .5em;
+    }
+}
+
+
 @media (max-height: 575.98px) and (orientation: landscape) {
     body {
         background: var(--background-color);
