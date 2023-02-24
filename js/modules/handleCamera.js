@@ -77,14 +77,19 @@ export async function enableCamera() {
 }
 
 export async function disableCamera() {
-    const mediaStream = video.srcObject;
-    const tracks = mediaStream.getTracks();
-    tracks.forEach(track => track.stop())
-    // https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297
+    if (location.hash == '#scan') {
+        const mediaStream = video.srcObject;
+        const tracks = mediaStream.getTracks();
+        tracks.forEach(track => track.stop())
+        // https://dev.to/morinoko/stopping-a-webcam-with-javascript-4297
+    } else {
+        console.log('not on scan page')
+    }
+
 }
 
-const showSlider = document.querySelector('section:nth-of-type(2) > button:last-of-type').addEventListener('click', () => { /* Toggle slider */
-    var slider = document.querySelector('section:nth-of-type(2) > input:last-of-type').classList.toggle('hidden')
+document.querySelector('section:nth-of-type(2) > button:last-of-type').addEventListener('click', () => { /* Toggle slider */
+    document.querySelector('section:nth-of-type(2) > input:last-of-type').classList.toggle('hidden')
 
     disableCamera()
     enableCamera();

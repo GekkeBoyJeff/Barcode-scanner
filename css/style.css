@@ -24,6 +24,10 @@
     width: 0px;
 }
 
+img {
+    max-width: 100%;
+}
+
 button:hover {
     cursor: pointer;
     filter: hue-rotate(35deg) contrast(1.5);
@@ -304,7 +308,7 @@ section:nth-of-type(2) div:has(> .skeleton)::after {
     footer {
         position: relative;
         background-color: var(--darker-background-color);
-        min-height: 15vh;
+        min-height: 12vh;
     }
 
     main {
@@ -367,4 +371,40 @@ section:nth-of-type(2) div:has(> .skeleton)::after {
     h1 {
         font-size: 1.4em;
     }
+}
+
+figure {
+    position: relative;
+}
+
+figure figcaption {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+figure button {
+    color: transparent;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    height: 3em;
+    width: 3em;
+    border-radius: 50%;
+    background: #fff;
+    border: .1em solid red;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+figure button::before {
+    content: '❤️';
+    color: red;
+    width: 3em;
+    font-size: 2em;
 }

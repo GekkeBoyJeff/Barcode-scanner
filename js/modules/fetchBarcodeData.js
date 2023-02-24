@@ -1,4 +1,5 @@
 import { renderProduct } from "./renderProduct.js"
+import { disableCamera } from "./handleCamera.js"
 
 export function fetchBarcodeData(barcodeValue) {
     var testUrl = `https://world.openfoodfacts.org/api/v0/product/${barcodeValue}.json`
@@ -14,6 +15,7 @@ export function fetchBarcodeData(barcodeValue) {
         })
         .then((data) => {
             console.log(data)
+            disableCamera();
             window.location.hash = `#product/${barcodeValue}`;
             renderProduct(data)
         })
