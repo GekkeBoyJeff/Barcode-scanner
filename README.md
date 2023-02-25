@@ -20,8 +20,11 @@ By using the API I can search for products by their barcode and get information 
 
 ## Feedback week 2
 
+### Unnecessary eventListeners
+
 I had a lot of feedback this week. Instead of using buttons and giving them an eventListener I was told to use an a tag instead. I did not want to agree with it though. Since this is a one-page application and I only simulate new 'pages' by hiding sections I thought buttons would semanticly be better. 
 However, I do agree that it looks horrible in the javascript file.
+
 ```JS
 document.querySelector('section:first-of-type > button:first-of-type').addEventListener('click', () => { /* Go to profile page */
     window.location.hash = '#profile';
@@ -99,6 +102,50 @@ section>button {
 
 By doing this I could delete one of the modules since I don't need to use the function I wrote anymore.
 
+#### Extra fixes
+
+##### Home page
+
+After this the home page wouldn't show up. That was because the sections only get displayed once they are targeted. I fixed this by adding the home hash to that page aswell.
+
+```JS
+default:
+	console.log('default');
+	console.log('back to home')
+	window.location.hash = '#home';
+	break;
+```
+
+##### Product page
+The product page would not be shown anymore if the hash had the ID in it. I fixed this by hiding the section every time the router function is called. 
+
+```JS
+    document.querySelector('section:nth-of-type(3)').style.display = 'none'; 
+```
+
+The section will only by shown in the actual fetch of the barcode.
+
+```JS
+    fetch(testUrl)
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            return res.json()
+        })
+        .then((data) => {
+            console.log(data)
+            disableCamera();
+            window.location.hash = `#product/${barcodeValue}`;
+/* -> */    document.querySelector('section:nth-of-type(3)').style.display = 'flex'; 
+            // show product section ^
+            renderProduct(data)
+        })
+}
+```
+
+### Ugly if-else statements
+
 He also pointed towards my checkData function. The way I'm making a fall-back wasn't looking nice so he hinted towards the Nullish coalescing operator which I aplied. it went from
 
 Old
@@ -136,15 +183,8 @@ try {
 }} 
 ```
 
-After this the home page wouldn't show up. That was because the sections only get displayed once they are targeted. I fixed this by adding the home hash to that page aswell.
 
-```JS
-default:
-	console.log('default');
-	console.log('back to home')
-	window.location.hash = '#home';
-	break;
-```
+### Ugly way of loading the router
 
 I was also told that the way I am loading my router and hashchange function in a wrong way so I changed that aswell
 
@@ -161,3 +201,5 @@ New
 window.addEventListener('load', router); /* als de pagina laadt, voer dan de router functie uit */
 window.addEventListener('hashchange', router, false); /* als de hash verandert, voer dan de router functie uit */
 ```
+
+

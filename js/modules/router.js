@@ -6,6 +6,13 @@ let headerText;
 export function router() {
     const hash = window.location.hash; // Get the hash from the URL
     const parts = hash.split('/'); // Split the hash into an array of parts
+
+    if (parts[0] == '#product') {
+        document.querySelector('section:nth-of-type(3)').style.display = 'flex';
+    } else {
+        document.querySelector('section:nth-of-type(3)').style.display = 'none';
+    }
+
     switch (parts[0]) { // Check which part of the hash we're dealing with
         case '#home':
             console.log('home');
@@ -20,6 +27,7 @@ export function router() {
         case '#product':
             console.log('product');
             headerText = 'Product name';
+            document.querySelector('section:nth-of-type(3)').style.display = 'flex';
             headerChange(headerText);
             if (parts.length > 1) { // Check if there's an ID in the hash
                 const barcodeValue = parts[1]; // Get the ID from the hash
@@ -37,4 +45,10 @@ export function router() {
             window.location.hash = '#home';
             break;
     }
+}
+
+function productCheck() {
+    const hash = window.location.hash;
+    const parts = hash.split('/');
+
 }

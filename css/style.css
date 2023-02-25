@@ -51,7 +51,6 @@ body {
 
 main {
     margin: 0 1em;
-    padding: 1em;
     min-height: 90%;
     background-color: var(--darker-background-color);
     border-radius: 1em 1em 0 0;
@@ -145,6 +144,7 @@ section {
     gap: 1em;
     overflow-y: scroll;
     display: none;
+    padding: 1em;
 }
 
 section:target {
@@ -380,6 +380,11 @@ section:nth-of-type(2) div:has(> .skeleton)::after {
     h1 {
         font-size: 1.4em;
     }
+}
+
+section>figure {
+    margin: -1em;
+    width: calc(100% + 2em);
 }
 
 figure {

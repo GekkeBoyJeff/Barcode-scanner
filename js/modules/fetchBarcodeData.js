@@ -5,7 +5,6 @@ export function fetchBarcodeData(barcodeValue) {
     var testUrl = `https://world.openfoodfacts.org/api/v0/product/${barcodeValue}.json`
     console.log(testUrl)
 
-    var p = document.querySelector('p')
     fetch(testUrl)
         .then((res) => {
             if (!res.ok) {
