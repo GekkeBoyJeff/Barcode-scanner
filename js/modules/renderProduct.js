@@ -16,12 +16,13 @@ function checkData(data) {
         data.product.name_en = data.product.name_en ?? 'Unknown';
         // data.product.image_front_url = data.product.image_front_url ?? 'https://www.bakkerijvanhouten.nl/wp-content/uploads/2018/10/placeholder.png';
         data.product.ingredients_original_tags = data.product.ingredients_original_tags ?? 'Unknown';
+        renderImages(data)
     } catch (error) {
         console.log(error);
     }
 }
 
-export async function renderImages(data) {
+async function renderImages(data) {
     // Get the image container element
     const imageContainer = document.querySelector("section:nth-of-type(3) figure div");
 
@@ -50,19 +51,6 @@ export async function renderImages(data) {
             imageContainer.appendChild(image);
         }
     });
-
-    // imageContainer.appendChild(imageContainer);
-
-
-    // Loop over the image URL keys and create an image element for each URL that exists
-    // for (const key of imageURLKeys) {
-    //     const imageUrl = imageUrls[key];
-    //     if (imageUrl) {
-    //         const imageElement = document.createElement("img");
-    //         imageElement.src = imageUrl;
-    //         imageContainer.appendChild(imageElement);
-    //     }
-    // }
 }
 
 

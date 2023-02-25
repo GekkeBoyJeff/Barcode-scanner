@@ -4,7 +4,7 @@ import { disableCamera } from './handleCamera.js'
 
 let headerText;
 
-export function router() {
+export function router(event) {
     const hash = window.location.hash; // Get the hash from the URL
     const parts = hash.split('/'); // Split the hash into an array of parts
 
@@ -32,10 +32,12 @@ export function router() {
             headerText = 'Product name';
             document.querySelector('section:nth-of-type(3)').style.display = 'flex';
             headerChange(headerText);
-            if (parts.length > 1) { // Check if there's an ID in the hash
+            if (parts.length > 1 /* && window.location.href.includes('search') */) { // Check if there's an ID in the hash
+                console.log(event.oldURL)
                 const barcodeValue = parts[1]; // Get the ID from the hash
                 fetchBarcodeData(barcodeValue);
-            }
+                console.log(window.location.href)
+            } else { }
             break;
         case '#profile':
             console.log('profile');

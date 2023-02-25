@@ -16,3 +16,37 @@ By using the API I can search for products by their barcode and get information 
 ## Made with
 
 ![Made with: HTML (shields.io)](https://img.shields.io/badge/Made%20with-HTML-orange?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciICB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiPjxwYXRoIGZpbGw9IiNFNjUxMDAiIGQ9Ik00MSw1SDdsMywzNGwxNCw0bDE0LTRMNDEsNUw0MSw1eiIvPjxwYXRoIGZpbGw9IiNGRjZEMDAiIGQ9Ik0yNCA4TDI0IDM5LjkgMzUuMiAzNi43IDM3LjcgOHoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMjQsMjV2LTRoOC42bC0wLjcsMTEuNUwyNCwzNS4xdi00LjJsNC4xLTEuNGwwLjMtNC41SDI0eiBNMzIuOSwxN2wwLjMtNEgyNHY0SDMyLjl6Ii8+PHBhdGggZmlsbD0iI0VFRSIgZD0iTTI0LDMwLjl2NC4ybC03LjktMi42TDE1LjcsMjdoNGwwLjIsMi41TDI0LDMwLjl6IE0xOS4xLDE3SDI0di00aC05LjFsMC43LDEySDI0di00aC00LjZMMTkuMSwxN3oiLz48L3N2Zz4=)  ![Made with: CSS (shields.io)](https://img.shields.io/badge/Styled%20with-CSS-blue?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciICB2aWV3Qm94PSIwIDAgNDggNDgiIHdpZHRoPSI0OHB4IiBoZWlnaHQ9IjQ4cHgiPjxwYXRoIGZpbGw9IiMwMjc3QkQiIGQ9Ik00MSw1SDdsMywzNGwxNCw0bDE0LTRMNDEsNUw0MSw1eiIvPjxwYXRoIGZpbGw9IiMwMzlCRTUiIGQ9Ik0yNCA4TDI0IDM5LjkgMzUuMiAzNi43IDM3LjcgOHoiLz48cGF0aCBmaWxsPSIjRkZGIiBkPSJNMzMuMSAxM0wyNCAxMyAyNCAxNyAyOC45IDE3IDI4LjYgMjEgMjQgMjEgMjQgMjUgMjguNCAyNSAyOC4xIDI5LjUgMjQgMzAuOSAyNCAzNS4xIDMxLjkgMzIuNSAzMi42IDIxIDMyLjYgMjF6Ii8+PHBhdGggZmlsbD0iI0VFRSIgZD0iTTI0LDEzdjRoLTguOWwtMC4zLTRIMjR6IE0xOS40LDIxbDAuMiw0SDI0di00SDE5LjR6IE0xOS44LDI3aC00bDAuMyw1LjVsNy45LDIuNnYtNC4ybC00LjEtMS40TDE5LjgsMjd6Ii8+PC9zdmc+)  ![Made with: JS (shields.io)](https://img.shields.io/badge/Coded%20with-JS-yellow?style=for-the-badge&logo=Javascript) 
+
+# Week 3
+
+## Adding support for loading multiple images
+Since the api gives multiple images I wanted the user to find these images aswell.
+I did this by defining an array with keys. Therse keys hold url's to the actual images.
+The foreach loop through the array. for each key it checks if the url is not empty. and if so, it creates a new image element with the source corresponding to the actual data source.
+
+```JS
+async function renderImages(data) {
+    // Get the image container element
+    const imageContainer = document.querySelector("section:nth-of-type(3) figure div");
+  
+    // Define an array of the image URL keys
+    const imageUrls = [
+        "image_front_url",
+        "image_ingredients_url",
+        "image_nutrition_url",
+        "image_url",
+    ];
+  
+    imageUrls.forEach((url) => {
+        if (url) { // Check if the URL is not empty
+            console.log(data.product[url])
+            console.log(url)
+            const image = document.createElement("img"); // Create a new image element
+            image.src = data.product[url]; // Set the image source to the corresponding URL
+            imageContainer.appendChild(image); // Append the image to the container
+        }
+    });
+}
+```
+
+## Error on loading multiple products

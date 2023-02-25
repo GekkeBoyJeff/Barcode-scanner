@@ -1,4 +1,4 @@
-import { renderProduct, renderImages } from "./renderProduct.js"
+import { renderProduct } from "./renderProduct.js"
 import { disableCamera } from "./handleCamera.js"
 
 
@@ -18,6 +18,5 @@ export function fetchBarcodeData(barcodeValue) {
             disableCamera();
             window.location.hash = `#product/${barcodeValue}`;
             renderProduct(data)
-            renderImages(data)
         })
 }
