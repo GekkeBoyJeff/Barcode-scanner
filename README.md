@@ -23,7 +23,6 @@ By using the API I can search for products by their barcode and get information 
 I had a lot of feedback this week. Instead of using buttons and giving them an eventListener I was told to use an a tag instead. I did not want to agree with it though. Since this is a one-page application and I only simulate new 'pages' by hiding sections I thought buttons would semanticly be better. 
 However, I do agree that it looks horrible in the javascript file.
 ```JS
-
 document.querySelector('section:first-of-type > button:first-of-type').addEventListener('click', () => { /* Go to profile page */
     window.location.hash = '#profile';
 })
@@ -100,3 +99,65 @@ section>button {
 
 By doing this I could delete one of the modules since I don't need to use the function I wrote anymore.
 
+He also pointed towards my checkData function. The way I'm making a fall-back wasn't looking nice so he hinted towards the Nullish coalescing operator which I aplied. it went from
+
+Old
+```JS
+function checkData(data) {
+    if (data.product.product_name === undefined) {
+        data.product.product_name = 'Unknown'
+    }
+    if (data.product.brands === undefined) {
+        data.product.brands = 'Unknown'
+    }
+    if (data.product.name_en === undefined) {
+        data.product.name_en = 'Unknown'
+    }
+    if (data.product.image_front_url === undefined) {
+        data.product.image_front_url = ''
+    }
+    if (data.product.ingredients_original_tags === undefined) {
+        data.product.ingredients_original_tags = 'Unknown'
+    }
+}
+```
+
+New
+```JS
+function checkData(data) {
+try {
+    data.product.product_name = data.product.product_name ?? 'Unknown';
+    data.product.brands = data.product.brands ?? 'Unknown';
+    data.product.name_en = data.product.name_en ?? 'Unknown';
+    data.product.image_front_url = data.product.image_front_url ?? '';
+    data.product.ingredients_original_tags = data.product.ingredients_original_tags ?? 'Unknown';
+} catch (error) {
+    console.log(error);
+}} 
+```
+
+After this the home page wouldn't show up. That was because the sections only get displayed once they are targeted. I fixed this by adding the home hash to that page aswell.
+
+```JS
+default:
+	console.log('default');
+	console.log('back to home')
+	window.location.hash = '#home';
+	break;
+```
+
+I was also told that the way I am loading my router and hashchange function in a wrong way so I changed that aswell
+
+Old
+```JS
+window.onload = router();
+window.addEventListener('hashchange', function () {
+    router()
+}, false);
+```
+
+New
+```JS
+window.addEventListener('load', router); /* als de pagina laadt, voer dan de router functie uit */
+window.addEventListener('hashchange', router, false); /* als de hash verandert, voer dan de router functie uit */
+```

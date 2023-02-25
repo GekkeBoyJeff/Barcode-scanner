@@ -161,7 +161,6 @@ section>button {
 }
 
 section:first-of-type {
-    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1em;

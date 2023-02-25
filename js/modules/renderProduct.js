@@ -1,5 +1,6 @@
 export async function renderProduct(data) {
     checkData(data);
+
     document.querySelector('header h1').textContent = data.product.product_name
     document.querySelector('section:nth-of-type(3) figcaption h2').textContent = data.product.brands
     document.querySelector('section:nth-of-type(3) figure figcaption p:first-of-type').textContent = data.product.name_en
@@ -9,20 +10,14 @@ export async function renderProduct(data) {
 }
 
 function checkData(data) {
-    if (data.product.product_name === undefined) {
-        data.product.product_name = 'Unknown'
-    }
-    if (data.product.brands === undefined) {
-        data.product.brands = 'Unknown'
-    }
-    if (data.product.name_en === undefined) {
-        data.product.name_en = 'Unknown'
-    }
-    if (data.product.image_front_url === undefined) {
-        data.product.image_front_url = 'https://www.bakkerijvanhouten.nl/wp-content/uploads/2018/10/placeholder.png'
-    }
-    if (data.product.ingredients_original_tags === undefined) {
-        data.product.ingredients_original_tags = 'Unknown'
+    try {
+        data.product.product_name = data.product.product_name ?? 'Unknown';
+        data.product.brands = data.product.brands ?? 'Unknown';
+        data.product.name_en = data.product.name_en ?? 'Unknown';
+        data.product.image_front_url = data.product.image_front_url ?? 'https://www.bakkerijvanhouten.nl/wp-content/uploads/2018/10/placeholder.png';
+        data.product.ingredients_original_tags = data.product.ingredients_original_tags ?? 'Unknown';
+    } catch (error) {
+        console.log(error);
     }
 }
 

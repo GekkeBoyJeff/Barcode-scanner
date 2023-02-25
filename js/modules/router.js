@@ -12,7 +12,7 @@ export function router() {
             headerText = 'Dashboard';
             headerChange(headerText);
             break;
-        case '#scan':
+        case '#search':
             console.log('scan');
             headerText = 'Scan your product';
             headerChange(headerText);
@@ -33,8 +33,8 @@ export function router() {
             break;
         default:
             console.log('default');
-            headerText = 'Dashboard';
-            headerChange(headerText);
+            console.log('back to home')
+            window.location.hash = '#home';
             break;
     }
 }
