@@ -43,8 +43,7 @@ export function router() {
             headerChange(headerText);
             break;
         default:
-            console.log('default');
-            console.log('back to home')
+            console.log('can\'t find hash \nredirecting to home')
             window.location.hash = '#home';
             break;
     }
