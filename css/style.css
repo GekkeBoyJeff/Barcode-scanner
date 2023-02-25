@@ -21,7 +21,18 @@
 }
 
 ::-webkit-scrollbar {
-    width: 0px;
+    width: 0px
+}
+
+div::-webkit-scrollbar {
+    background: unset;
+    height: 10px;
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 1em;
 }
 
 img {
@@ -391,6 +402,22 @@ figure {
     position: relative;
 }
 
+figure>div {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-align: center;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+    padding-bottom: .5em;
+    border-radius: .5em;
+}
+
+figure>div>img {
+    scroll-snap-align: start;
+    aspect-ratio: 1;
+}
+
 figure figcaption {
     position: absolute;
     top: 0;
@@ -399,6 +426,7 @@ figure figcaption {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    pointer-events: none;
 }
 
 figure button {
