@@ -49,4 +49,16 @@ async function renderImages(data) {
 }
 ```
 
-## Error on loading multiple products
+## Error on loading multiple product images
+The images on the product page did not disapear when the user makes a new search. I fixed this by making another function which checks if the container has a child in it.
+
+```JS
+async function checkForLoadedData() {
+    while (imageContainer.firstChild) {
+        imageContainer.innerHTML = '';
+    }
+}
+```
+
+if it has a child it clears the image container.
+

@@ -1,3 +1,6 @@
+// Get the image container element
+const imageContainer = document.querySelector("section:nth-of-type(3) figure div");
+
 export async function renderProduct(data) {
     checkData(data);
 
@@ -11,6 +14,7 @@ export async function renderProduct(data) {
 
 function checkData(data) {
     try {
+
         data.product.product_name = data.product.product_name ?? 'Unknown';
         data.product.brands = data.product.brands ?? 'Unknown';
         data.product.name_en = data.product.name_en ?? 'Unknown';
@@ -23,9 +27,7 @@ function checkData(data) {
 }
 
 async function renderImages(data) {
-    // Get the image container element
-    const imageContainer = document.querySelector("section:nth-of-type(3) figure div");
-
+    checkForLoadedData();
     // Define an array of the image URL keys
     const imageUrls = [
         // "image_front_small_url",
@@ -51,6 +53,12 @@ async function renderImages(data) {
             imageContainer.appendChild(image);
         }
     });
+}
+
+async function checkForLoadedData() {
+    while (imageContainer.firstChild) {
+        imageContainer.innerHTML = '';
+    }
 }
 
 
