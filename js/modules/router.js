@@ -1,11 +1,14 @@
 import { headerChange } from './changeHeader.js'
 import { fetchBarcodeData } from './fetchBarcodeData.js'
+import { disableCamera } from './handleCamera.js'
 
 let headerText;
 
 export function router() {
     const hash = window.location.hash; // Get the hash from the URL
     const parts = hash.split('/'); // Split the hash into an array of parts
+
+    disableCamera();
 
     if (parts[0] == '#product') {
         document.querySelector('section:nth-of-type(3)').style.display = 'flex';
@@ -45,10 +48,4 @@ export function router() {
             window.location.hash = '#home';
             break;
     }
-}
-
-function productCheck() {
-    const hash = window.location.hash;
-    const parts = hash.split('/');
-
 }
