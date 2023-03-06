@@ -14,7 +14,6 @@ export async function renderProduct(data) {
 
 function checkData(data) {
     try {
-
         data.product.product_name = data.product.product_name ?? 'Unknown';
         data.product.brands = data.product.brands ?? 'Unknown';
         data.product.name_en = data.product.name_en ?? 'Unknown';
