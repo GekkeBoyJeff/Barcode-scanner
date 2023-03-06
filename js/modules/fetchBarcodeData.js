@@ -22,8 +22,10 @@ export function fetchBarcodeData(barcodeValue) {
                 window.location.hash = `#search`;
                 errorPopup.classList.add('active')
                 setTimeout(() => {
+                    navigator.vibrate(200);
                     errorPopup.classList.remove('active');
                 }, 2000);
+
                 return;
             } else {
                 errorPopup.classList.remove('active');
