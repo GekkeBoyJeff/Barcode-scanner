@@ -33,7 +33,8 @@ export async function enableCamera() {
 
             // Check if focus distance is supported or not
             if (!capabilities.focusMode) {
-                return;
+                console.log('focusmode not supported')
+                // return;
             }
 
             // Check if focus distance setting is supported or not

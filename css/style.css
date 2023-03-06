@@ -6,6 +6,7 @@
     --accent-color: linear-gradient(309deg, rgb(85 5 118) 0%, rgb(28 32 167) 100%);
     --darker-accent-color: #a068ff;
     --blurred-bg-color: rgb(47 47 47 / 45%);
+    --header-color: #092235;
 }
 
 * {
@@ -21,17 +22,18 @@
 }
 
 ::-webkit-scrollbar {
-    width: 0px
+    width: 0px;
 }
 
 div::-webkit-scrollbar {
     background: unset;
     height: 10px;
+
 }
 
 div::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-    outline: 1px solid slategrey;
+    background-color: var(--header-color);
+    outline: 1px solid #fff;
     border-radius: 1em;
 }
 
@@ -184,7 +186,7 @@ section:first-of-type a {
     flex-basis: 10em;
     border-radius: .5em;
     height: 10em;
-    color: var(--header-color);
+    color: var(--text-color);
 }
 
 section:nth-of-type(2) {
@@ -269,7 +271,7 @@ section:nth-of-type(2) button:nth-of-type(3) {
 }
 
 h1 {
-    color: var(--header-color);
+    color: var(--text-color);
 }
 
 a,
