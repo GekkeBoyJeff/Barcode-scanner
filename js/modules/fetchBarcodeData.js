@@ -21,7 +21,7 @@ export function fetchBarcodeData(barcodeValue) {
                 console.log('product not found')
                 window.location.hash = `#search`;
                 errorPopup.classList.add('active')
-                navigator.vibrate(200);
+                navigator.vibrate(1000);
                 setTimeout(() => {
                     errorPopup.classList.remove('active');
                 }, 2000);
