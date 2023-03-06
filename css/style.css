@@ -454,3 +454,31 @@ figure button::before {
     font-size: 2em;
     margin-top: -.1em;
 }
+
+header div:nth-of-type(2) {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: auto;
+    height: 2em;
+    padding: 1em;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-40%, -150%);
+}
+
+header div:nth-of-type(2) p {
+    color: var(--solid-accent-color);
+    filter: hue-rotate(35deg) contrast(1.5);
+    font-weight: 700;
+}
+
+header div:nth-of-type(2).active {
+    transform: translate(-50%, 0%) scale(1.2);
+    display: flex;
+    box-shadow: 0 0 red;
+}
+
+body:has(div.active) header>*:not(div:last-of-type) {
+    filter: opacity(.6);
+}

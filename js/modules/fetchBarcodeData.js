@@ -3,8 +3,11 @@ import { disableCamera } from "./handleCamera.js"
 
 
 export function fetchBarcodeData(barcodeValue) {
-    var testUrl = `https://world.openfoodfacts.org/api/v0/product/${barcodeValue}.json`
+    let testUrl = `https://world.openfoodfacts.org/api/v0/product/${barcodeValue}.json`
     console.log(testUrl)
+
+    const errorPopup = document.querySelector('header div:nth-of-type(2)')
+
 
     fetch(testUrl)
         .then((res) => {
@@ -17,8 +20,13 @@ export function fetchBarcodeData(barcodeValue) {
             if (data.status_verbose == "product not found" || data.status_verbose == "no code or invalid code") {
                 console.log('product not found')
                 window.location.hash = `#search`;
+                errorPopup.classList.add('active')
+                setTimeout(() => {
+                    errorPopup.classList.remove('active');
+                }, 2000);
                 return;
             } else {
+                errorPopup.classList.remove('active');
                 console.log(data)
                 disableCamera();
                 window.location.hash = `#product/${barcodeValue}`;
