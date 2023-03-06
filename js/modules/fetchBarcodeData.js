@@ -14,8 +14,9 @@ export function fetchBarcodeData(barcodeValue) {
             return res.json()
         })
         .then((data) => {
-            if (data.status_verbose == "product not found") {
+            if (data.status_verbose == "product not found" || data.status_verbose == "no code or invalid code") {
                 console.log('product not found')
+                window.location.hash = `#search`;
                 return;
             } else {
                 console.log(data)

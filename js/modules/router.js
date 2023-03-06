@@ -38,7 +38,10 @@ export function router(event) {
                 const barcodeValue = parts[1]; // Get the ID from the hash
                 fetchBarcodeData(barcodeValue);
                 console.log(window.location.href)
-            } else { }
+            } else {
+                console.log('no barcode')
+                window.location.hash = '#search';
+            }
             break;
         case '#profile':
             console.log('profile');
