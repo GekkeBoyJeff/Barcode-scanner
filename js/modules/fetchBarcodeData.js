@@ -14,9 +14,14 @@ export function fetchBarcodeData(barcodeValue) {
             return res.json()
         })
         .then((data) => {
-            console.log(data)
-            disableCamera();
-            window.location.hash = `#product/${barcodeValue}`;
-            renderProduct(data)
+            if (data.status_verbose == "product not found") {
+                console.log('product not found')
+                return;
+            } else {
+                console.log(data)
+                disableCamera();
+                window.location.hash = `#product/${barcodeValue}`;
+                renderProduct(data)
+            }
         })
 }

@@ -29,3 +29,12 @@ export const detectCode = () => {
         console.error(err);
     })
 }
+
+document.querySelector('#searchButton').addEventListener('click', searchInput);
+
+function searchInput() {
+    const search = document.querySelector('#searchValue');
+    const searchValue = search.value;
+    console.log(searchValue)
+    fetchBarcodeData(searchValue)
+}
