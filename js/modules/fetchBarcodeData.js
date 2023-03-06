@@ -19,9 +19,9 @@ export function fetchBarcodeData(barcodeValue) {
         .then((data) => {
             if (data.status_verbose == "product not found" || data.status_verbose == "no code or invalid code") {
                 console.log('product not found')
+                navigator.vibrate(1000);
                 window.location.hash = `#search`;
                 errorPopup.classList.add('active')
-                navigator.vibrate(1000);
                 setTimeout(() => {
                     errorPopup.classList.remove('active');
                 }, 2000);
