@@ -3,7 +3,7 @@
 import { router } from './modules/router.js'
 import { enableCamera, disableCamera } from './modules/handleCamera.js'
 
-window.addEventListener('load', router); /* als de pagina laadt, voer dan de router functie uit */
+router() /* voer de router functie uit */
 window.addEventListener('hashchange', router, false); /* als de hash verandert, voer dan de router functie uit */
 
 var homeBackButton = document.querySelector('header > button:first-of-type')
@@ -16,3 +16,4 @@ homeBackButton.addEventListener('click', () => {
 
 startCamera.addEventListener('click', enableCamera)
 stopCamera.addEventListener('click', disableCamera)
+

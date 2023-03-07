@@ -13,6 +13,7 @@
     margin: 0;
     padding: 0;
     text-decoration: none;
+    opacity: 1;
     list-style-type: none;
     border: none;
     background-color: unset;
@@ -268,6 +269,10 @@ section:nth-of-type(2) button:nth-of-type(3) {
     header {
         background: var(--background-color);
     }
+
+    figure figcaption *:not(button) {
+        color: var(--darker-background-color);
+    }
 }
 
 h1 {
@@ -284,11 +289,12 @@ button {
 }
 
 .skeleton {
-    opacity: .7;
+    opacity: .5;
     animation: skeleton-loading 1s linear infinite alternate;
 }
 
-section:nth-of-type(2) div:has(> .skeleton)::after {
+section:nth-of-type(2) div:has(> .skeleton)::after,
+section:nth-of-type(3) figure.skeleton::after {
     content: 'Loading...';
     position: absolute;
     top: 0;
@@ -400,6 +406,16 @@ section>figure {
     width: calc(100% + 2em);
 }
 
+figure figcaption *:not(button).skeleton {
+    filter: brightness(0.5);
+    width: 4em;
+    height: 1.5em;
+}
+
+section>figure.skeleton {
+    height: 26em;
+}
+
 figure {
     position: relative;
 }
@@ -410,6 +426,7 @@ figure>div {
     overflow-y: hidden;
     scroll-snap-align: center;
     width: 100%;
+    height: 26em;
     scroll-snap-type: x mandatory;
     padding-bottom: .5em;
     border-radius: .5em;
@@ -417,7 +434,7 @@ figure>div {
 
 figure>div>img {
     scroll-snap-align: start;
-    aspect-ratio: 1;
+    object-fit: contain;
 }
 
 figure figcaption {
@@ -434,16 +451,13 @@ figure figcaption {
 figure button {
     color: transparent;
     position: absolute;
-    top: 1em;
+    top: 1.5em;
     right: 1em;
-    height: 3em;
-    width: 3em;
-    border-radius: 50%;
-    background: #fff;
-    border: .1em solid red;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+    height: 3.5em;
+    width: revert;
+    border-radius: .2em;
+    background: rgb(0 0 0 / .5);
+    backdrop-filter: blur(.1em);
 }
 
 figure button::before {
@@ -465,11 +479,13 @@ header div:nth-of-type(2) {
     align-items: center;
     justify-content: center;
     transform: translate(-40%, -150%);
+    border: 2px solid var(--solid-accent-color);
+    filter: hue-rotate(35deg) contrast(1.5);
 }
 
 header div:nth-of-type(2) p {
     color: var(--solid-accent-color);
-    filter: hue-rotate(35deg) contrast(1.5);
+    /* filter: hue-rotate(35deg) contrast(1.5); */
     font-weight: 700;
 }
 
@@ -481,4 +497,157 @@ header div:nth-of-type(2).active {
 
 body:has(div.active) header>*:not(div:last-of-type) {
     filter: opacity(.6);
+}
+
+/* Info in figure */
+
+figure figcaption *:not(button) {
+    position: absolute;
+    top: 1em;
+    left: 0;
+    background: rgb(0 0 0 /.5);
+    padding: .5em;
+    border-radius: 0 .2em .2em 0;
+    backdrop-filter: blur(.1em);
+    max-width: 60%;
+}
+
+figure figcaption p:last-of-type {
+    top: unset;
+    bottom: 2em;
+    left: 1em;
+    padding: .5em;
+    border-radius: .2em;
+}
+
+figure figcaption p:first-of-type {
+    top: unset;
+    left: unset;
+    bottom: 2em;
+    right: 1em;
+    text-align: right;
+    border-radius: .2em;
+}
+
+/* Nutition score */
+section#product {
+    flex-direction: column;
+}
+
+section#product>div:first-of-type {
+    margin-bottom: 1em;
+    display: flex;
+    width: fit-content;
+    border-radius: .2em;
+}
+
+section#product>div:first-of-type span {
+    font-weight: 700;
+    padding: .2em;
+    width: 1.2em;
+    text-align: center;
+}
+
+section#product>div:first-of-type span:first-of-type {
+    background: darkgreen;
+    border-radius: .2em 0 0 .2em;
+}
+
+section#product>div:first-of-type span:nth-of-type(2) {
+    background: green;
+}
+
+section#product>div:first-of-type span:nth-of-type(3) {
+    background: #efd911;
+}
+
+section#product>div:first-of-type span:nth-of-type(4) {
+    background: orange;
+}
+
+section#product>div:first-of-type span:last-of-type {
+    background: red;
+    border-radius: 0 .2em .2em 0;
+}
+
+section#product>h3:first-of-type {
+    margin-top: 1.5em;
+    width: 8em;
+}
+
+span.active {
+    transform: scale(1.2);
+    z-index: 1;
+    border-radius: .2em;
+}
+
+section#product>div:first-of-type span:not(.active) {
+    opacity: .6;
+    filter: grayscale(.7);
+}
+
+/* Ingredients */
+
+summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+details {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+details[open]>summary::after {
+    content: '^';
+    transform: rotate(0deg);
+}
+
+details>summary::after {
+    content: '^';
+    transform: rotate(180deg);
+    transition: .5s;
+}
+
+details:hover {
+    cursor: pointer;
+}
+
+/* Ingredients styling */
+
+details ul {
+    cursor: auto;
+    display: flex;
+    gap: .5em;
+    flex-wrap: wrap;
+    margin-top: 1em;
+}
+
+details ul li {
+    background: var(--solid-accent-color);
+    padding: .2em .6em;
+    border-radius: .2em;
+    color: #fff;
+    height: 1.35em;
+    min-width: 2em;
+}
+
+details[open] {
+    background: var(--blurred-bg-color);
+    padding: 1em;
+    border-radius: .4em;
+}
+
+details[open].skeleton {
+    height: 9em;
+}
+
+section:nth-of-type(3) figure.skeleton::after {
+    content: 'Loading images...';
+}
+
+details ul li.skeleton {
+    filter: brightness(0.5);
 }

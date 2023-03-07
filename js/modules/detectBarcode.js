@@ -5,11 +5,11 @@ const video = document.querySelector('#video')
 
 let formats; //wat voor barcode / qr code ze kunnen scannen
 // Save all formats to formats var 
-BarcodeDetector.getSupportedFormats().then(arr => formats = arr);
+await BarcodeDetector.getSupportedFormats().then(arr => formats = arr);
 // Create new barcode detector with all supported formats
 const barcodeDetector = new BarcodeDetector({ formats });
 
-// Detect code function 
+// Detect code function
 export const detectCode = () => {
     // Start detecting codes on to the video element
     barcodeDetector.detect(video).then(codes => {

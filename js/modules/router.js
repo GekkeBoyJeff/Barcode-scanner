@@ -34,7 +34,6 @@ export function router(event) {
             headerChange(headerText);
             if (parts.length > 1 /* && window.location.href.includes('search') */) { // Check if there's an ID in the hash
 
-                console.log(event.oldURL)
                 const barcodeValue = parts[1]; // Get the ID from the hash
                 fetchBarcodeData(barcodeValue);
                 console.log(window.location.href)
