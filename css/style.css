@@ -57,6 +57,7 @@ body {
     max-width: 50em;
     margin: auto;
     position: relative;
+
 }
 
 .hidden {
@@ -598,6 +599,8 @@ details {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    padding: 1em;
+    transition: .5s;
 }
 
 details[open]>summary::after {
@@ -636,7 +639,6 @@ details ul li {
 
 details[open] {
     background: var(--blurred-bg-color);
-    padding: 1em;
     border-radius: .4em;
 }
 
