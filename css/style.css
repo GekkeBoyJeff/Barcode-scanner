@@ -196,7 +196,7 @@ section:nth-of-type(2) {
     padding-bottom: 12em;
 }
 
-header div {
+header form {
     display: flex;
     width: 100%;
     height: 3em;
@@ -206,7 +206,7 @@ header div {
     overflow: hidden;
 }
 
-header div input[type="submit"] {
+header form input[type="submit"] {
     width: 20%;
     font-size: 1.5em;
     display: flex;
@@ -220,14 +220,14 @@ header input[type="submit"]:hover {
     background: var(--solid-accent-color);
 }
 
-div label input[type="search"] {
+form label input[type="search"] {
     width: 100%;
     height: 100%;
     padding: 0 .5em;
     font-size: 1em;
 }
 
-div label {
+form label {
     width: 100%;
 }
 
@@ -435,7 +435,7 @@ figure>div {
 
 figure>div>img {
     scroll-snap-align: start;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 figure figcaption {
@@ -470,7 +470,7 @@ figure button::before {
     margin-top: -.1em;
 }
 
-header div:nth-of-type(2) {
+header div {
     position: absolute;
     top: 0;
     left: 50%;
@@ -484,19 +484,20 @@ header div:nth-of-type(2) {
     filter: hue-rotate(35deg) contrast(1.5);
 }
 
-header div:nth-of-type(2) p {
+header div p {
     color: var(--solid-accent-color);
-    /* filter: hue-rotate(35deg) contrast(1.5); */
     font-weight: 700;
 }
 
-header div:nth-of-type(2).active {
-    transform: translate(-50%, 0%) scale(1.2);
+header div.active {
+    transform: translate(-50%, 40%) scale(1.2);
     display: flex;
     box-shadow: 0 0 red;
+    background: rgb(12 2 2 / 56%);
+    border-radius: .3em;
 }
 
-body:has(div.active) header>*:not(div:last-of-type) {
+body:has(div.active) header>*:not(div) {
     filter: opacity(.6);
 }
 
@@ -549,24 +550,24 @@ section#product>div:first-of-type span {
     text-align: center;
 }
 
-section#product>div:first-of-type span:first-of-type {
+span[data-value="A"] {
     background: darkgreen;
     border-radius: .2em 0 0 .2em;
 }
 
-section#product>div:first-of-type span:nth-of-type(2) {
+span[data-value="B"] {
     background: green;
 }
 
-section#product>div:first-of-type span:nth-of-type(3) {
+span[data-value="C"] {
     background: #efd911;
 }
 
-section#product>div:first-of-type span:nth-of-type(4) {
+span[data-value="D"] {
     background: orange;
 }
 
-section#product>div:first-of-type span:last-of-type {
+span[data-value="E"] {
     background: red;
     border-radius: 0 .2em .2em 0;
 }
@@ -652,4 +653,79 @@ section:nth-of-type(3) figure.skeleton::after {
 
 details ul li.skeleton {
     filter: brightness(0.5);
+}
+
+/* Product list styling  */
+
+section#products ul {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+section#products ul li {
+    flex: 1 1 14em;
+    justify-content: center;
+    display: flex;
+}
+
+section#products ul li a {
+    gap: 1em;
+    width: 14em;
+    height: 23em;
+    display: flex;
+    justify-content: start;
+    position: relative;
+    border-radius: .2em;
+    overflow: hidden;
+}
+
+section#products ul li a img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+    background: gray;
+    position: relative;
+}
+
+section#products ul li a img::after {
+    content: 'has no image';
+    color: black;
+    position: absolute;
+    top: 45%;
+    left: 4em;
+}
+
+section#products ul li a h3 {
+    position: absolute;
+    bottom: 0;
+    padding: .2em;
+    left: 0;
+    width: 100%;
+    background: rgb(0 0 0 / .5);
+    backdrop-filter: blur(.2em);
+    height: 3em;
+}
+
+section#products ul li span {
+    position: absolute;
+    right: .5em;
+    top: .5em;
+    padding: .5em;
+    border-radius: .25em;
+    text-transform: uppercase;
+}
+
+section:nth-of-type(4) a:hover {
+    filter: unset;
+}
+
+section:nth-of-type(4) a:hover img {
+    transform: scale(1.2);
+}
+
+section#products ul li.skeleton {
+    height: 20em;
 }

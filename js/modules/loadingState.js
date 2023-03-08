@@ -1,6 +1,5 @@
-export function showLoadingState() {
+export function showLoadingState(section) {
     console.log('loading aan')
-    let section = document.querySelector('section:nth-of-type(3)');
     section.querySelectorAll('*').forEach(function (element) {
         if ((element.tagName !== 'SPAN' || !element.closest('div')) && element.tagName !== 'H3') {
             element.classList.add('skeleton');
@@ -8,9 +7,8 @@ export function showLoadingState() {
     });
 }
 
-export function hideLoadingState() {
+export function hideLoadingState(section) {
     console.log('loading uit')
-    let section = document.querySelector('section:nth-of-type(3)');
     section.querySelectorAll('*').forEach(function (element) {
         element.classList.remove('skeleton');
     });

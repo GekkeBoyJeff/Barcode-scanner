@@ -2,7 +2,9 @@ import { showLoadingState, hideLoadingState } from "./loadingState.js";
 
 /* Get the image container element */
 const imageContainer = document.querySelector("section:nth-of-type(3) figure div");
-showLoadingState();
+
+const section = document.querySelector('section:nth-of-type(3)');
+showLoadingState(section);
 
 export async function renderProduct(data) {
     checkData(data);
@@ -11,9 +13,14 @@ export async function renderProduct(data) {
     document.querySelector('section:nth-of-type(3) figcaption h2').textContent = data.product.brands
     document.querySelector('section:nth-of-type(3) figure figcaption p:first-of-type').textContent = data.product.quantity
     document.querySelector('section:nth-of-type(3) p:last-of-type').textContent = data.product.code
-    document.querySelector('section:nth-of-type(3) > details > ul').innerHTML = data.product.ingredients_original_tags.map(ingredient => `<li>${ingredient.replace(/^en:/, '')}</li>`).join('')
+    try {
+        document.querySelector('section:nth-of-type(3) > details > ul').innerHTML = data.product.ingredients_original_tags.map(ingredient => `<li>${ingredient.replace(/^en:/, '')}</li>`).join('')
+    }
+    catch (error) {
+        console.log(error)
+    }
 
-    hideLoadingState();
+    hideLoadingState(section);
 }
 
 function checkData(data) {
@@ -23,6 +30,11 @@ function checkData(data) {
         data.product.name_en = data.product.name_en ?? 'Unknown';
         data.product.ingredients_original_tags = data.product.ingredients_original_tags ?? 'Unknown';
         renderImages(data)
+
+        const nutriSpan = document.querySelector('span.active');
+        if (nutriSpan) {
+            nutriSpan.classList.remove('active');
+        }
         nutritionScore(data);
     } catch (error) {
         console.log(error);
@@ -69,25 +81,27 @@ function nutritionScore(data) {
     nutriSpan.classList.add('active');
 }
 
+export async function renderSearchList(data) {
+    const searchList = document.querySelector('section:nth-of-type(4) ul');
+    searchList.innerHTML = '';
 
-// code
-// product_name_nl
-// brands
-// categories_hierarchy []
-// categories_tags
-// allergens_hierarchy []
-// name_en // korte beschrijving
-// food_groups_tags []
-// image_front_url
-// image_ingredients_url
-// image_nutrition_url
-// image_packaging_url
-// image_url
-// ingredients_original_tags []
-// nutrient_levels {}
-// nutriments {}
-// nutrition_data
-// nutrition_grades
-// product_quantity
-// update_key
+    data.products.forEach(product => {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        const image = document.createElement('img');
+        const title = document.createElement('h3');
+        const score = document.createElement('span');
 
+        score.setAttribute('data-value', (product.nutriscore_grade || 'Unknown').toUpperCase());
+
+        image.src = product.image_small_url;
+        link.href = `#product/${product.code}`;
+        title.textContent = product.product_name;
+        score.textContent = product.nutriscore_grade;
+
+        link.append(image, title, score);
+        listItem.appendChild(link);
+        searchList.appendChild(listItem);
+    })
+    // for each item in the fetch data, create a list item with a link to the product page
+}
