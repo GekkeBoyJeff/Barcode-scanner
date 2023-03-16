@@ -10,8 +10,8 @@ By using the API I can search for products by their barcode and get information 
 
 <a href="../../issues"> ![https://github.com/GekkeBoyJeff/Barcode-scanner/issues](https://img.shields.io/github/issues/GekkeBoyJeff/Barcode-scanner?style=for-the-badge) 
 </a>
-<a href="#"> ![firefox](https://img.shields.io/badge/Not%20compatible%20with%20Firefox-red?style=for-the-badge) </a>
-<a href="#"> ![safari](https://img.shields.io/badge/Not%20compatible%20with%20Safari-red?style=for-the-badge) </a>
+<a href="../../issues"> ![firefox](https://img.shields.io/badge/Not%20compatible%20with%20Firefox-red?style=for-the-badge) </a>
+<a href="../../issues"> ![safari](https://img.shields.io/badge/Not%20compatible%20with%20Safari-red?style=for-the-badge) </a>
 
 ## Made with
 
