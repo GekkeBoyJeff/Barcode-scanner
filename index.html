@@ -95,22 +95,20 @@
                         <span class="reticle-beam"></span>
                     </div>
                     <p class="viewfinder-hint" id="viewfinder-hint" data-i18n="hints.tapStart">
-                        Press Start to open the camera
+                        Search for a product by name or barcode
                     </p>
-                </div>
 
-                <div class="scanner-controls">
-                    <button class="btn btn-primary" id="btn-start" type="button">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
-                            stroke="currentColor" stroke-width="1.75"
-                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M4 17v2a1 1 0 0 0 1 1h2M20 17v2a1 1 0 0 1-1 1h-2"/>
-                            <path d="M7 8v8M11 8v8M15 8v8"/>
-                        </svg>
-                        <span data-i18n="actions.startCamera">Start camera</span>
-                    </button>
-                    <button class="btn btn-ghost" id="btn-stop" type="button" disabled
-                        data-i18n="actions.stop">Stop</button>
+                    <div class="viewfinder-controls">
+                        <button class="btn btn-primary button-toggle toggle-start" id="btn-camera" type="button">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+                                stroke="currentColor" stroke-width="1.75"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M4 17v2a1 1 0 0 0 1 1h2M20 17v2a1 1 0 0 1-1 1h-2"/>
+                                <path d="M7 8v8M11 8v8M15 8v8"/>
+                            </svg>
+                            <span id="btn-camera-label" data-i18n="actions.startCamera">Start camera</span>
+                        </button>
+                    </div>
                 </div>
             </section>
 

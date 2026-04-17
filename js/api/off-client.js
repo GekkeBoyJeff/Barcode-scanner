@@ -1,28 +1,11 @@
 import { createLogger } from '../lib/logger.js'
 
 // Open Food Facts client.
-// Barcode lookups hit OFF directly; text search goes through a Worker because
-// the native search endpoint does not return permissive CORS headers.
-
-const LOOKUP_URL = 'https://world.openfoodfacts.org/api/v2/product'
+// All reads go through one Worker endpoint so browser-side CORS is avoided and
+// app flows use a single transport layer for both search and detail lookups.
 const SEARCH_PROXY = 'https://off-search.apexy.workers.dev/'
 
 const log = createLogger('api')
-
-
-
-
-const FIELDS = [
-    'code', 'product_name', 'generic_name', 'brands', 'categories',
-    'quantity', 'product_quantity', 'product_quantity_unit',
-    'image_front_url', 'image_ingredients_url', 'image_nutrition_url',
-    'image_packaging_url', 'image_url',
-    'nutriscore_grade', 'nova_group', 'ecoscore_grade',
-    'ingredients_analysis_tags', 'labels_tags',
-    'nutriments', 'nutrient_levels', 'serving_size', 'serving_quantity',
-    'allergens_tags', 'traces_tags', 'ingredients_text',
-    'unique_scans_n', 'scans_n', 'completeness', 'last_modified_t'
-].join(',')
 
 const NUTRIMENT_KEYS = [
     ['energy-kcal', 'kcal'],
@@ -36,16 +19,24 @@ const NUTRIMENT_KEYS = [
 ]
 
 // Lookup a single product by barcode.
-// 404 is treated as "not found", not as a transport failure.
 export const lookupByCode = async (code) => {
-    const url = `${LOOKUP_URL}/${encodeURIComponent(code)}.json?fields=${FIELDS}`
+    const fields = [
+        'code', 'product_name', 'generic_name', 'brands', 'categories',
+        'quantity', 'product_quantity', 'product_quantity_unit',
+        'image_front_url', 'image_ingredients_url', 'image_nutrition_url',
+        'image_packaging_url', 'image_url',
+        'nutriscore_grade', 'nova_group', 'ecoscore_grade',
+        'ingredients_analysis_tags', 'labels_tags',
+        'nutriments', 'nutrient_levels', 'serving_size', 'serving_quantity',
+        'allergens_tags', 'traces_tags', 'ingredients_text',
+        'unique_scans_n', 'scans_n', 'completeness', 'last_modified_t'
+    ].join(',')
+
+    const params = new URLSearchParams({ code: String(code || ''), fields })
+    const url = `${SEARCH_PROXY}?${params}`
     log.log('lookup →', code)
 
     const res = await fetch(url, { headers: { Accept: 'application/json' } })
-
-// Search by name with optional Nutri-Score filters.
-// Multi-grade filters are merged client-side because OFF query syntax does not
-// support a native OR across grade constraints.
     if (res.status === 404) return null
     if (!res.ok) throw new Error(`Lookup failed (${res.status})`)
 
@@ -86,10 +77,10 @@ export const searchByName = async (query, opts = {}) => {
 // Lightweight liveness probe for startup status messaging.
 export const checkHealth = async () => {
     try {
-        const res = await fetch(`${LOOKUP_URL}/5449000000996.json?fields=code`, {
+        const probe = await fetch(`${SEARCH_PROXY}?${new URLSearchParams({ q: 'coca cola', page: '1', page_size: '1' })}`, {
             headers: { Accept: 'application/json' }
         })
-        return res.ok
+        return probe.ok
     } catch {
         return false
     }
@@ -116,7 +107,8 @@ const fetchSearchPage = async (q, page, pageSize) => {
 
 // Normalize OFF payload shape into a stable app-facing model.
 const normalise = (raw) => {
-    const code = raw.code || ''
+    const code = String(raw.code || '')
+    const serving = pickServing(raw)
 
     return {
         code,
@@ -134,8 +126,9 @@ const normalise = (raw) => {
         labels: (raw.labels_tags || []).map(stripTag).slice(0, 6),
         nutriments: pickNutriments(raw.nutriments || {}),
         nutrientLevels: raw.nutrient_levels || {},
-        servingSize: raw.serving_size || '',
-        servingQuantity: Number(raw.serving_quantity) || null,
+        servingSize: serving.size,
+        servingQuantity: serving.quantity,
+        nutritionBase: serving.base,
         allergens: (raw.allergens_tags || []).map(stripTag),
         traces: (raw.traces_tags || []).map(stripTag),
         ingredients: raw.ingredients_text || '',
@@ -143,6 +136,38 @@ const normalise = (raw) => {
         completeness: typeof raw.completeness === 'number' ? raw.completeness : null,
         lastModified: raw.last_modified_t ? new Date(raw.last_modified_t * 1000) : null
     }
+}
+
+const pickServing = (raw) => {
+    const size = String(raw.serving_size || '').trim()
+    const quantityDirect = Number(raw.serving_quantity)
+
+    const parsed = parseServingSize(size)
+    const quantity = Number.isFinite(quantityDirect) && quantityDirect > 0
+        ? quantityDirect
+        : parsed.quantity
+
+    return {
+        size,
+        quantity,
+        base: parsed.base
+    }
+}
+
+const parseServingSize = (size) => {
+    const normalized = String(size || '').toLowerCase().replace(',', '.')
+    const match = normalized.match(/(\d+(?:\.\d+)?)\s*(ml|cl|l|g|kg)\b/)
+    if (!match) return { quantity: null, base: 'g' }
+
+    const amount = Number(match[1])
+    const unit = match[2]
+    if (!Number.isFinite(amount) || amount <= 0) return { quantity: null, base: 'g' }
+
+    if (unit === 'ml') return { quantity: amount, base: 'ml' }
+    if (unit === 'cl') return { quantity: amount * 10, base: 'ml' }
+    if (unit === 'l') return { quantity: amount * 1000, base: 'ml' }
+    if (unit === 'kg') return { quantity: amount * 1000, base: 'g' }
+    return { quantity: amount, base: 'g' }
 }
 
 // OFF taxonomy tags often include locale prefixes and kebab casing.

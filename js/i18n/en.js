@@ -83,6 +83,7 @@ export default {
     scores: {
         sectionLabel: 'Scores',
         nutriScore: 'Nutri-Score',
+        nutriUnavailable: 'Unavailable',
         nova: 'NOVA (processing)',
         ecoScore: 'Eco-Score',
         nutriVerdicts: {
@@ -131,6 +132,7 @@ export default {
     },
     nutrition: {
         per100g: 'Per 100 g',
+        per100ml: 'Per 100 ml',
         perServing: 'Per serving ({size})',
         perServingShort: 'Per serving',
         labels: {
@@ -185,6 +187,6 @@ export default {
         shareNotSupported: 'Sharing is not supported in this browser'
     },
     hints: {
-        tapStart: 'Press Start to open the camera'
+        tapStart: 'Search for a product by name or barcode'
     }
 }

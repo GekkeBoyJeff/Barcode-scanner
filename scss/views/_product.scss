@@ -339,6 +339,12 @@
     text-align: center;
 }
 
+.score-row-muted {
+    .score-verdict {
+        text-align: left;
+    }
+}
+
 .nutriscore {
     display: grid;
     grid-template-columns: repeat(5, 1fr);

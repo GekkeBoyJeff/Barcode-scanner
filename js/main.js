@@ -17,6 +17,66 @@ import { t } from './lib/i18n.js'
 
 const log = createLogger('app')
 
+let cameraStarting = false
+
+const setCameraToggleClass = (mode) => {
+    const button = $('#btn-camera')
+    if (!button) return
+    const isStart = mode === 'start'
+    button.classList.toggle('toggle-start', isStart)
+    button.classList.toggle('toggle-stop', !isStart)
+    button.classList.toggle('btn-primary', isStart)
+    button.classList.toggle('btn-ghost', !isStart)
+}
+
+const syncCameraButton = () => {
+    const running = scanner.isRunning()
+    const button = $('#btn-camera')
+    const label = $('#btn-camera-label')
+    if (!button || !label) return
+
+    setCameraToggleClass(running ? 'stop' : 'start')
+    button.disabled = cameraStarting
+    label.textContent = running ? t('actions.stop') : t('actions.startCamera')
+    button.setAttribute('aria-label', label.textContent)
+}
+
+const onCameraToggleClick = async () => {
+    const button = $('#btn-camera')
+    if (!button) return
+
+    if (button.classList.contains('toggle-stop')) {
+        scanner.stop()
+        setState({ scannerLive: false, statusKind: 'idle', statusLabel: t('status.cameraOff') })
+        syncCameraButton()
+        return
+    }
+
+    await startCamera()
+}
+
+const startCamera = async () => {
+    if (scanner.isRunning() || cameraStarting) {
+        syncCameraButton()
+        return
+    }
+
+    cameraStarting = true
+    syncCameraButton()
+    setState({ statusKind: 'busy', statusLabel: t('status.cameraStarting') })
+    try {
+        const ok = await scanner.start()
+        if (ok) {
+            setState({ scannerLive: true, statusKind: 'live', statusLabel: t('status.cameraLive') })
+        } else {
+            showToast(t('errors.cameraBlocked'))
+            setState({ statusKind: 'error', statusLabel: t('status.cameraError') })
+        }
+    } finally {
+        cameraStarting = false
+        syncCameraButton()
+    }
+}
 
 const bindDom = () => {
     $('#search-form')?.addEventListener('submit', (e) => {
@@ -37,21 +97,8 @@ const bindDom = () => {
         input.focus()
     })
 
-    $('#btn-start')?.addEventListener('click', async () => {
-        setState({ statusKind: 'busy', statusLabel: t('status.cameraStarting') })
-        const ok = await scanner.start()
-        if (ok) {
-            setState({ scannerLive: true, statusKind: 'live', statusLabel: t('status.cameraLive') })
-        } else {
-            showToast(t('errors.cameraBlocked'))
-            setState({ statusKind: 'error', statusLabel: t('status.cameraError') })
-        }
-    })
-
-    $('#btn-stop')?.addEventListener('click', () => {
-        scanner.stop()
-        setState({ scannerLive: false, statusKind: 'idle', statusLabel: t('status.cameraOff') })
-    })
+    $('#btn-camera')?.addEventListener('click', onCameraToggleClick)
+    document.addEventListener('visibilitychange', syncCameraButton)
 
     $('#btn-close')?.addEventListener('click', () => router.navigate('home'))
 
@@ -60,11 +107,14 @@ const bindDom = () => {
             router.navigate('home')
         }
     })
+
+    syncCameraButton()
 }
 
 const subscribeViews = () => {
     let lastView = ''
     let lastProduct = null
+    let lastNutritionScope = ''
     let lastSearchSig = ''
     let lastHistorySig = ''
 
@@ -76,9 +126,30 @@ const subscribeViews = () => {
             reflectViewToDom(state)
         }
 
-        if (view === 'product' && product && product !== lastProduct) {
-            lastProduct = product
-            productView.render(product)
+        if (view === 'product' && product) {
+            const productChanged = product !== lastProduct
+            if (productChanged || state.nutritionScope !== lastNutritionScope) {
+                lastProduct = product
+                lastNutritionScope = state.nutritionScope
+                if (productChanged) {
+                    log.log('product details', {
+                        code: product.code,
+                        name: product.name,
+                        brand: product.brand,
+                        quantity: product.quantity,
+                        nutriscore: product.nutriscore || null,
+                        nova: product.nova,
+                        ecoscore: product.ecoscore || null,
+                        nutritionBase: product.nutritionBase || 'g',
+                        servingSize: product.servingSize || null,
+                        servingQuantity: product.servingQuantity,
+                        nutrimentsCount: product.nutriments?.length || 0,
+                        imagesCount: product.images?.length || 0,
+                        analysis: (product.analysis || []).slice(0, 6)
+                    })
+                }
+                productView.render(product)
+            }
         }
 
         if (view === 'results') {
@@ -87,7 +158,14 @@ const subscribeViews = () => {
                 // Signature gate avoids unnecessary full-list rerenders.
                 lastSearchSig = sig
                 resultsView.render(search, {
-                    onPick: (p) => router.navigate(`product/${p.code}`),
+                    onPick: (p) => {
+                        setState({
+                            product: p,
+                            statusKind: 'found',
+                            statusLabel: t('status.found', { name: p.name })
+                        })
+                        router.navigate(`product/${p.code}`)
+                    },
                     onLoadMore: controller.loadMore,
                     onGradesChange: controller.applyGrades,
                     onSortChange: controller.applySort
@@ -137,13 +215,13 @@ const reactToRoute = (route) => {
 
         case 'scan':
             setState({ view: 'empty' })
-            $('#btn-start')?.click()
+            startCamera()
             break
 
         case 'product': {
             const code = route.params[0]
             if (!code) { router.navigate('home', { replace: true }); return }
-            if (getState().product?.code !== code) controller.lookup(code)
+            if (String(getState().product?.code || '') !== String(code)) controller.lookup(String(code))
             else setState({ view: 'product' })
             break
         }
@@ -200,6 +278,7 @@ const boot = async () => {
         // Stop immediately to prevent repeat detections from a stable camera frame.
         scanner.stop()
         setState({ scannerLive: false })
+        syncCameraButton()
         router.navigate(`product/${code}`)
     })
 

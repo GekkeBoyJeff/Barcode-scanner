@@ -6,6 +6,8 @@ export const render = (host, product) => {
 
     if (product.nutriscore && 'ABCDE'.includes(product.nutriscore)) {
         rows.push(renderNutriScore(product.nutriscore))
+    } else {
+        rows.push(renderNutriUnavailable())
     }
 
     if (product.nova && product.nova >= 1 && product.nova <= 4) {
@@ -36,6 +38,13 @@ const renderNutriScore = (grade) => {
             dataset: { grade }
         }, ...segments),
         h('p', { class: 'score-verdict' }, t(`scores.nutriVerdicts.${grade}`))
+    )
+}
+
+const renderNutriUnavailable = () => {
+    return h('div', { class: 'score-row score-row-nutri score-row-muted' },
+        h('span', { class: 'score-label' }, t('scores.nutriScore')),
+        h('p', { class: 'score-verdict' }, t('scores.nutriUnavailable'))
     )
 }
 

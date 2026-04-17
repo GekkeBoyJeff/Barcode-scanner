@@ -103,6 +103,28 @@
         opacity: 1;
         transform: scale(1);
     }
+
+    .viewfinder-controls {
+        position: absolute;
+        left: spacing(2);
+        right: spacing(2);
+        bottom: spacing(3);
+        display: flex;
+        justify-content: center;
+        z-index: z(raised);
+
+        .btn {
+            min-width: 12rem;
+            backdrop-filter: blur(0.4rem);
+            background: color-mix(in oklab, var(--accent) 82%, black 18%);
+            border: $hairline solid color-mix(in oklab, white 14%, transparent);
+            box-shadow: 0 0.5rem 1.4rem color-mix(in oklab, black 40%, transparent);
+        }
+    }
+
+    &[data-state='live'] .viewfinder-controls .btn {
+        background: color-mix(in oklab, var(--danger) 72%, black 28%);
+    }
 }
 
 @keyframes beam-sweep {
@@ -110,12 +132,21 @@
     50%      { transform: translateY(80%); opacity: 1; }
 }
 
-.scanner-controls {
-    display: flex;
-    gap: spacing(2);
-    flex-wrap: wrap;
+@media (orientation: landscape) and (max-height: 32.5rem) {
+    .viewfinder {
+        .viewfinder-hint {
+            max-width: 24ch;
+            text-align: center;
+        }
 
-    .btn {
-        flex: 1 1 auto;
+        .viewfinder-controls {
+            bottom: spacing(2);
+
+            .btn {
+                min-width: 10rem;
+                min-height: 2.25rem;
+                padding: spacing(1.5) spacing(3);
+            }
+        }
     }
 }

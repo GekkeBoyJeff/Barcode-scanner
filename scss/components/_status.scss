@@ -10,6 +10,7 @@
     font-size: text(xs);
     color: var(--ink-dim);
     white-space: nowrap;
+    min-width: 0;
 
     .status-dot {
         width: 0.5rem;
@@ -17,6 +18,15 @@
         border-radius: radius(full);
         background: var(--ink-mute);
         transition: background var(--dur-sm), box-shadow var(--dur-sm);
+    }
+
+    .status-text {
+        display: block;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 

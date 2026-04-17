@@ -1,7 +1,5 @@
-// Cloudflare Worker — tiny CORS proxy for Open Food Facts' search endpoint.
-// `search.openfoodfacts.org` returns valid JSON but does not send an
-// `Access-Control-Allow-Origin` header, which makes it unreadable from a
-// browser. This worker forwards the query string verbatim and adds the header.
+// Cloudflare Worker — CORS proxy for Open Food Facts read endpoints.
+// Supports text search and barcode lookup through a single same-origin entry.
 //
 // Deployment:
 //   1. `npm install -g wrangler`
@@ -9,7 +7,8 @@
 //   3. `cd worker && wrangler deploy`
 //   4. Copy the resulting URL into js/api/off-client.js → `SEARCH_PROXY`.
 
-const UPSTREAM = 'https://search.openfoodfacts.org/search'
+const SEARCH_UPSTREAM = 'https://search.openfoodfacts.org/search'
+const LOOKUP_UPSTREAM = 'https://world.openfoodfacts.org/api/v2/product'
 
 const CORS_HEADERS = {
     'Access-Control-Allow-Origin': '*',
@@ -29,12 +28,17 @@ export default {
         }
 
         const url = new URL(request.url)
-        const target = `${UPSTREAM}?${url.searchParams.toString()}`
+        const code = String(url.searchParams.get('code') || '').trim()
+        const fields = String(url.searchParams.get('fields') || '').trim()
+
+        const target = code
+            ? `${LOOKUP_UPSTREAM}/${encodeURIComponent(code)}.json${fields ? `?fields=${encodeURIComponent(fields)}` : ''}`
+            : `${SEARCH_UPSTREAM}?${url.searchParams.toString()}`
 
         try {
             const upstream = await fetch(target, {
                 headers: { Accept: 'application/json' },
-                cf: { cacheTtl: 60, cacheEverything: true }
+                cf: { cacheTtl: code ? 120 : 60, cacheEverything: true }
             })
 
             const body = await upstream.arrayBuffer()
@@ -43,7 +47,7 @@ export default {
                 headers: {
                     ...CORS_HEADERS,
                     'Content-Type': upstream.headers.get('content-type') || 'application/json',
-                    'Cache-Control': 'public, max-age=60'
+                    'Cache-Control': code ? 'public, max-age=120' : 'public, max-age=60'
                 }
             })
         } catch (err) {

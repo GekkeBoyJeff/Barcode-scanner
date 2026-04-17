@@ -83,6 +83,7 @@ export default {
     scores: {
         sectionLabel: 'Scores',
         nutriScore: 'Nutri-Score',
+        nutriUnavailable: 'Niet beschikbaar',
         nova: 'NOVA (bewerkingsgraad)',
         ecoScore: 'Eco-Score',
         nutriVerdicts: {
@@ -131,6 +132,7 @@ export default {
     },
     nutrition: {
         per100g: 'Per 100 g',
+        per100ml: 'Per 100 ml',
         perServing: 'Per portie ({size})',
         perServingShort: 'Per portie',
         labels: {
@@ -185,6 +187,6 @@ export default {
         shareNotSupported: 'Delen wordt niet ondersteund in deze browser'
     },
     hints: {
-        tapStart: 'Druk op Start om de camera te openen'
+        tapStart: 'Zoek een product op naam of barcode'
     }
 }

@@ -58,10 +58,13 @@ $top-height: 2.75rem;
         flex-direction: column;
     }
 
-    > .view-empty:not([hidden]),
     > .view-loading:not([hidden]),
     > .view-results:not([hidden]) {
         justify-content: safe center;
+    }
+
+    > .view-empty:not([hidden]) {
+        justify-content: flex-start;
     }
 
     > .view-product:not([hidden]) {
@@ -72,6 +75,7 @@ $top-height: 2.75rem;
 
 @media (orientation: portrait) and (max-width: 55rem) {
     .app {
+        grid-template-rows: auto minmax(0, 1fr);
         padding: spacing(2);
         gap: spacing(2);
     }
@@ -80,6 +84,29 @@ $top-height: 2.75rem;
         grid-template-columns: 1fr;
         grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
         transition: grid-template-rows var(--dur-md) var(--ease);
+    }
+
+    .top {
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-areas:
+            'search close'
+            'status status';
+        row-gap: spacing(2);
+    }
+
+    .top > .search {
+        grid-area: search;
+        min-width: 0;
+    }
+
+    .top > #btn-close {
+        grid-area: close;
+    }
+
+    .top > .status {
+        grid-area: status;
+        min-width: 0;
+        max-width: 100%;
     }
 
     .app[data-mode='result'],
@@ -96,6 +123,14 @@ $top-height: 2.75rem;
         }
     }
 
+    .app[data-mode='empty'] .main {
+        grid-template-rows: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    }
+
+    .app[data-mode='empty'] .pane-info > .view-empty:not([hidden]) {
+        padding: spacing(3);
+    }
+
     .pane-scanner {
         transition:
             opacity var(--dur-sm),
@@ -106,17 +141,48 @@ $top-height: 2.75rem;
 
 @media (orientation: landscape) and (max-height: 32.5rem) {
     .app {
+        grid-template-rows: auto minmax(0, 1fr);
         padding: spacing(1);
         gap: spacing(1);
     }
 
+    .top {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, auto);
+        align-items: center;
+        gap: spacing(1);
+        padding: 0;
+    }
+
+    .top > .search {
+        min-width: 0;
+    }
+
+    .top > #btn-close {
+        min-width: 0;
+    }
+
+    .top > .status {
+        min-width: 0;
+        max-width: min(42vw, 18rem);
+        padding: 0 spacing(1);
+    }
+
     .main {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        margin: 0.35rem 0;
+        margin: 0;
+        gap: spacing(1);
     }
 
     .pane {
         padding: spacing(2);
+        gap: spacing(1.5);
+    }
+
+    .pane-info > *:not([hidden]) {
+        padding: spacing(2);
+    }
+
+    .pane-info > .view-product:not([hidden]) {
         gap: spacing(2);
     }
 }

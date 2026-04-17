@@ -6,9 +6,11 @@ export const render = (host, product) => {
     if (!product.nutriments.length) return false
 
     const state = getState()
+    const baseUnit = product.nutritionBase === 'ml' ? 'ml' : 'g'
+    const baseLabel = baseUnit === 'ml' ? t('nutrition.per100ml') : t('nutrition.per100g')
     const scope = product.servingQuantity && product.servingQuantity > 0
         ? state.nutritionScope
-        : '100g'
+        : `100${baseUnit}`
     const scale = scope === 'serving' ? product.servingQuantity / 100 : 1
 
     const rows = product.nutriments.map((n, i) => renderRow(n, product.nutrientLevels, scale, i))
@@ -17,9 +19,9 @@ export const render = (host, product) => {
         h('span', { class: 'score-label' },
             scope === 'serving'
                 ? t('nutrition.perServing', { size: product.servingSize })
-                : t('nutrition.per100g')),
+                : baseLabel),
         product.servingQuantity && product.servingQuantity > 0
-            ? renderToggle(scope)
+            ? renderToggle(scope, product.servingSize, baseUnit)
             : null
     )
 
@@ -28,21 +30,23 @@ export const render = (host, product) => {
     return true
 }
 
-const renderToggle = (scope) => {
+const renderToggle = (scope, servingSize, baseUnit) => {
     const set = (next) => () => setState({ nutritionScope: next })
+    const baseValue = baseUnit === 'ml' ? '100 ml' : '100 g'
+    const servingValue = String(servingSize || '').trim() || t('nutrition.perServingShort')
     return h('div', { class: 'nutrition-toggle', role: 'tablist' },
         h('button', {
             type: 'button',
             role: 'tab',
-            'aria-pressed': String(scope === '100g'),
-            onClick: set('100g')
-        }, '100 g'),
+            'aria-pressed': String(scope !== 'serving'),
+            onClick: set(`100${baseUnit}`)
+        }, baseValue),
         h('button', {
             type: 'button',
             role: 'tab',
             'aria-pressed': String(scope === 'serving'),
             onClick: set('serving')
-        }, t('nutrition.perServingShort'))
+        }, servingValue)
     )
 }
 
