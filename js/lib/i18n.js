@@ -34,7 +34,7 @@ const resolve = (obj, path) => {
     return path.split('.').reduce((acc, key) => (acc == null ? acc : acc[key]), obj)
 }
 
-const PLURAL_RE = /\{(\w+),\s*plural,([^}]*)\}/g
+const PLURAL_RE = /\{(\w+),\s*plural,\s*((?:\w+\s*\{[^{}]*\}\s*)+)\}/g
 const SLOT_RE = /\{(\w+)\}/g
 
 // Minimal ICU-like interpolation supporting plural/select and {placeholders}.
