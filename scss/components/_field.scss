@@ -94,3 +94,10 @@
         pointer-events: none;
     }
 }
+
+@media (hover: none) and (pointer: coarse) {
+    .search .search-input,
+    .select select {
+        font-size: 16px;
+    }
+}
