@@ -1,0 +1,17 @@
+{
+  "name": "barcode-scanner",
+  "version": "1.0.0",
+  "description": "A barcode scanner PWA that surfaces Open Food Facts data.",
+  "author": "Jeffrey Ullers <https://www.jeffreyullers.nl/>",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "sass scss/main.scss css/style.css --style=compressed --no-source-map",
+    "watch:css": "sass --watch scss/main.scss:css/style.css --style=expanded",
+    "serve": "npx http-server -p 4173 -c-1 ."
+  },
+  "devDependencies": {
+    "sass": "^1.78.0"
+  }
+}

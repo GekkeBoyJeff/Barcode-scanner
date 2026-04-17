@@ -1,0 +1,68 @@
+@use '../tokens' as *;
+@use '../mixins' as *;
+
+.chip-grade {
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: radius(sm);
+    font-weight: 700;
+    font-size: text(sm);
+    letter-spacing: -0.01em;
+    background: var(--bg-elev);
+    color: var(--ink-mute);
+    border: $hairline solid var(--line-soft);
+    transition:
+        transform var(--dur-xs),
+        background var(--dur-sm),
+        color var(--dur-sm),
+        border-color var(--dur-sm),
+        box-shadow var(--dur-sm);
+
+    &:hover {
+        border-color: var(--line);
+        color: var(--ink);
+    }
+
+    &:active {
+        transform: scale(0.92);
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+}
+
+@each $grade, $color in ('A': var(--grade-a), 'B': var(--grade-b), 'C': var(--grade-c), 'D': var(--grade-d), 'E': var(--grade-e)) {
+    .chip-grade[data-grade='#{$grade}'][aria-pressed='true'] {
+        background: $color;
+        color: var(--ink);
+        border-color: transparent;
+        box-shadow: 0 0.125rem 0.625rem color-mix(in oklab, #{$color} 40%, transparent);
+    }
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: text(xs);
+    padding: spacing(1) spacing(2);
+    border-radius: radius(full);
+    border: $hairline solid var(--line-soft);
+    background: var(--bg-elev-2);
+    color: var(--ink-dim);
+    letter-spacing: 0.01em;
+
+    &.is-good {
+        background: color-mix(in oklab, var(--ok) 18%, var(--bg-elev-2));
+        color: oklch(82% 0.16 145);
+        border-color: color-mix(in oklab, var(--ok) 30%, transparent);
+    }
+
+    &.is-warn {
+        background: color-mix(in oklab, var(--warn) 18%, var(--bg-elev-2));
+        color: oklch(85% 0.17 55);
+        border-color: color-mix(in oklab, var(--warn) 30%, transparent);
+    }
+}

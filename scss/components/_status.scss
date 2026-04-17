@@ -1,0 +1,77 @@
+@use '../tokens' as *;
+
+
+.status {
+    display: inline-flex;
+    align-items: center;
+    gap: spacing(2);
+    padding: 0 spacing(3);
+    height: 2.75rem;
+    font-size: text(xs);
+    color: var(--ink-dim);
+    white-space: nowrap;
+
+    .status-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: radius(full);
+        background: var(--ink-mute);
+        transition: background var(--dur-sm), box-shadow var(--dur-sm);
+    }
+}
+
+.status[data-state='idle'] {
+    color: var(--ink-dim);
+
+    .status-dot { background: var(--ink-dim); }
+}
+
+.status[data-state='live'] {
+    color: var(--ok);
+
+    .status-dot {
+        background: var(--ok);
+        box-shadow: 0 0 0 $focus-width color-mix(in oklab, var(--ok) 28%, transparent);
+        animation: status-pulse 1.8s infinite;
+    }
+}
+
+.status[data-state='busy'] {
+    color: var(--accent);
+
+    .status-dot {
+        background: var(--accent);
+        box-shadow: 0 0 0.625rem var(--accent);
+        animation: status-pulse 1.2s infinite;
+    }
+}
+
+.status[data-state='found'] {
+    color: var(--accent);
+
+    .status-dot {
+        background: var(--accent);
+        box-shadow: 0 0 0.625rem var(--accent);
+    }
+}
+
+.status[data-state='error'] {
+    color: var(--danger);
+
+    .status-dot {
+        background: var(--danger);
+        box-shadow: 0 0 0.625rem var(--danger);
+        animation: status-pulse 1s infinite;
+    }
+}
+
+@keyframes status-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}

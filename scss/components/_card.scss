@@ -1,0 +1,32 @@
+@use '../tokens' as *;
+
+.card {
+    background: var(--bg-elev-2);
+    border: $hairline solid var(--line-soft);
+    border-radius: radius(md);
+    padding: spacing(3) spacing(4);
+
+    .card-label {
+        color: var(--ink-mute);
+        font-size: text(xs);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        margin: 0 0 spacing(1);
+    }
+
+    .card-value {
+        color: var(--ink);
+        font-size: text(base);
+        margin: 0;
+    }
+}
+
+.kicker {
+    color: var(--ink-mute);
+    font-size: text(xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    margin: 0;
+}

@@ -1,0 +1,111 @@
+@use 'sass:map';
+
+$spacings: (
+    0: 0,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 0.75rem,
+    4: 1rem,
+    5: 1.5rem,
+    6: 2rem,
+    7: 3rem,
+    8: 4.5rem
+);
+
+@function spacing($step) {
+    @return map.get($spacings, $step);
+}
+
+$type: (
+    xs: 0.75rem,
+    sm: 0.875rem,
+    base: 1rem,
+    lg: 1.125rem,
+    xl: 1.5rem,
+    2xl: 2rem
+);
+
+@function text($step) {
+    @return map.get($type, $step);
+}
+
+$radii: (
+    sm: 0.375rem,
+    md: 0.625rem,
+    lg: 0.875rem,
+    full: 999rem
+);
+
+@function radius($step) {
+    @return map.get($radii, $step);
+}
+
+$z: (
+    base: 0,
+    raised: 1,
+    sticky: 10,
+    overlay: 20,
+    modal: 50,
+    toast: 100
+);
+
+@function z($step) {
+    @return map.get($z, $step);
+}
+
+$hairline: 1px;
+$focus-width: 2px;
+
+:root {
+    color-scheme: dark light;
+
+    --bg: oklch(13% 0.006 260);
+    --bg-elev: oklch(17% 0.008 260);
+    --bg-elev-2: oklch(21% 0.01 260);
+
+    --ink: oklch(97% 0.005 260);
+    --ink-dim: oklch(72% 0.01 260);
+    --ink-mute: oklch(54% 0.012 260);
+
+    --line: oklch(28% 0.012 260);
+    --line-soft: oklch(22% 0.01 260);
+
+    --accent: oklch(88% 0.22 128);
+    --accent-ink: oklch(18% 0.05 128);
+
+    --ok: oklch(78% 0.18 145);
+    --warn: oklch(78% 0.17 60);
+    --danger: oklch(68% 0.22 25);
+
+    --grade-a: oklch(62% 0.19 145);
+    --grade-b: oklch(72% 0.18 130);
+    --grade-c: oklch(85% 0.17 95);
+    --grade-d: oklch(72% 0.17 55);
+    --grade-e: oklch(60% 0.22 28);
+
+    --dur-xs: 140ms;
+    --dur-sm: 220ms;
+    --dur-md: 360ms;
+    --dur-lg: 560ms;
+
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: oklch(98% 0.003 260);
+        --bg-elev: oklch(100% 0 0);
+        --bg-elev-2: oklch(95% 0.005 260);
+
+        --ink: oklch(18% 0.008 260);
+        --ink-dim: oklch(42% 0.012 260);
+        --ink-mute: oklch(58% 0.012 260);
+
+        --line: oklch(86% 0.008 260);
+        --line-soft: oklch(92% 0.005 260);
+
+        --accent: oklch(62% 0.18 145);
+        --accent-ink: oklch(98% 0.005 145);
+    }
+}

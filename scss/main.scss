@@ -1,0 +1,30 @@
+@use 'tokens';
+@use 'mixins';
+@use 'base';
+@use 'layout';
+
+@use 'components/button';
+@use 'components/field';
+@use 'components/status';
+@use 'components/toast';
+@use 'components/chip';
+@use 'components/card';
+
+@use 'views/empty';
+@use 'views/scanner';
+@use 'views/product';
+@use 'views/results';
+
+[hidden] {
+	display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms;
+		transition-duration: 0.01ms;
+		animation-iteration-count: 1;
+	}
+}

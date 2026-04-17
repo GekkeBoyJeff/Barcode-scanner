@@ -1,126 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
+<!-- Barcode Scanner — Jeffrey Ullers, https://www.jeffreyullers.nl/ -->
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#111318" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+
+    <title>Barcode Scanner</title>
+    <meta name="description" content="Scan any barcode for an instant read on the product. Nutrition, ingredients, allergens and scores from Open Food Facts.">
+    <meta name="author" content="Jeffrey Ullers">
+
+    <meta property="og:title" content="Barcode Scanner">
+    <meta property="og:description" content="Scan any barcode for an instant read on the product.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en">
+    <meta property="og:locale:alternate" content="nl">
+    <meta property="article:author" content="https://www.jeffreyullers.nl/">
+    <meta name="twitter:card" content="summary">
+
+    <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg">
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+    <link rel="manifest" href="./manifest.webmanifest">
+
+    <link rel="preconnect" href="https://rsms.me" crossorigin>
+    <link rel="preconnect" href="https://world.openfoodfacts.org">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="./css/style.css">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Barcode Scanner",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0" },
+        "author": {
+            "@type": "Person",
+            "name": "Jeffrey Ullers",
+            "url": "https://www.jeffreyullers.nl/"
+        }
+    }
+    </script>
 </head>
 
 <body>
-    <header>
-        <button>back</button>
-        <h1>Dashboard</h1>
-        <button>love</button>
-        <form>
-            <label>
-                <input type="search" id="searchValue">
-            </label>
-            <input type="submit" value="🔎" id="searchButton">
-        </form>
-        <div>
-            <p>Product not found</p>
-        </div>
-    </header>
-    <main>
-        <section id="home"> <!-- Home page -->
-            <a href="#profile">
-                Profile
-            </a>
-            <a href="#search">
-                Search
-            </a>
-        </section>
-        <section id="search"> <!-- Barcode scanner page -->
-            <!-- <h2>Scan a QR Code</h2>
-            <p>Scan a QR code to see the result.</p> -->
-            <div>
-                <video id="video" autoplay></video>
+    <a class="skip-link" href="#main" data-i18n="actions.close">Skip to content</a>
+
+    <div class="app" id="app" data-mode="empty">
+        <header class="top">
+            <form class="search" id="search-form" role="search">
+                <svg class="search-icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+                    <circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="1.75"/>
+                    <path d="M14 14l4 4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                </svg>
+                <input
+                    class="search-input"
+                    id="search-input"
+                    type="text"
+                    inputmode="search"
+                    autocomplete="off"
+                    data-i18n-attr="placeholder:search.placeholder,aria-label:search.placeholder">
+                <button class="search-clear" id="search-clear" type="button" hidden
+                    data-i18n-attr="aria-label:actions.clear">×</button>
+            </form>
+
+            <button class="btn btn-ghost" id="btn-close" type="button" hidden>
+                <svg id="btn-close-icon" viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+                    <path id="btn-close-path" d="M5 5l10 10M15 5L5 15"
+                        stroke="currentColor" stroke-width="1.75" stroke-linecap="round" fill="none"/>
+                </svg>
+                <span id="btn-close-label" data-i18n="actions.close">Close</span>
+            </button>
+
+            <div class="status" id="status" role="status" aria-live="polite" data-state="idle">
+                <span class="status-dot"></span>
+                <span class="status-text" id="status-text" data-i18n="status.ready">Ready</span>
             </div>
-            <button>
-                Start
-            </button>
-            <button>
-                Stop
-            </button>
-            <button>Click here for manual focus controls</button>
-            <input type="range" class="hidden">
-        </section>
-        <section id="product"> <!-- product page-->
-            <figure>
-                <div>
-                    <img src="" alt="">
+        </header>
+
+        <main class="main" id="main">
+            <section class="pane pane-scanner" aria-labelledby="pane-scanner-label">
+                <h2 id="pane-scanner-label" class="sr-only" data-i18n="app.tagline">Scanner</h2>
+
+                <div class="viewfinder" id="viewfinder" data-state="idle">
+                    <video id="video" playsinline muted></video>
+                    <div class="reticle" aria-hidden="true">
+                        <span class="reticle-corner" data-pos="tl"></span>
+                        <span class="reticle-corner" data-pos="tr"></span>
+                        <span class="reticle-corner" data-pos="bl"></span>
+                        <span class="reticle-corner" data-pos="br"></span>
+                        <span class="reticle-beam"></span>
+                    </div>
+                    <p class="viewfinder-hint" id="viewfinder-hint" data-i18n="hints.tapStart">
+                        Press Start to open the camera
+                    </p>
                 </div>
 
-                <figcaption>
-                    <button>
-                        Favorite <!-- Favorite button -->
+                <div class="scanner-controls">
+                    <button class="btn btn-primary" id="btn-start" type="button">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+                            stroke="currentColor" stroke-width="1.75"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 7V5a1 1 0 0 1 1-1h2M17 4h2a1 1 0 0 1 1 1v2M4 17v2a1 1 0 0 0 1 1h2M20 17v2a1 1 0 0 1-1 1h-2"/>
+                            <path d="M7 8v8M11 8v8M15 8v8"/>
+                        </svg>
+                        <span data-i18n="actions.startCamera">Start camera</span>
                     </button>
-                    <h2></h2>
-                    <p>Broncode</p>
-                    <p></p> <!-- ean number -->
-                    <!-- <p></p>  -->
-                </figcaption>
-            </figure>
-            <h3>Nutri-score</h3>
-            <div>
-                <span data-value="A">A</span>
-                <span data-value="B">B</span>
-                <span data-value="C">C</span>
-                <span data-value="D">D</span>
-                <span data-value="E">E</span>
-            </div>
-            <details open>
-                <summary>
-                    <h3>Ingredients</h3>
-                </summary>
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </details>
+                    <button class="btn btn-ghost" id="btn-stop" type="button" disabled
+                        data-i18n="actions.stop">Stop</button>
+                </div>
+            </section>
 
-        </section>
-        <section id="products">
-            <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            <button>Previous</button><button>Next</button>
-        </section>
-    </main>
-    <footer>
-        <a href="#home">
-            home
-            <img src="" alt="">
-        </a>
-        <a href="#search">
-            search
-            <img src="" alt="">
-        </a>
-        <a href="#profile">
-            profile
-            <img src="" alt="">
-        </a>
-    </footer>
-    <script src="js/app.js" type="module"></script>
-    <!-- polyfill -->
+            <section class="pane pane-info" aria-labelledby="pane-info-label">
+                <h2 id="pane-info-label" class="sr-only">Result</h2>
+                <div class="view-empty" id="view-empty"></div>
+                <article class="view-product" id="view-product" hidden></article>
+                <section class="view-results" id="view-results" hidden></section>
+                <div class="view-loading" id="view-loading" hidden></div>
+            </section>
+        </main>
+
+        <div class="toast" id="toast" hidden>
+            <span class="toast-dot"></span>
+            <span id="toast-msg"></span>
+        </div>
+    </div>
+
+    <!-- BarcodeDetector polyfill — loaded before the app so the detector is ready. -->
     <script src="https://cdn.jsdelivr.net/npm/@undecaf/zbar-wasm@0.9.11/dist/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@undecaf/barcode-detector-polyfill@0.9.13/dist/index.js"></script>
     <script>
         try {
-            window['BarcodeDetector'].getSupportedFormats()
+            window.BarcodeDetector.getSupportedFormats()
         } catch {
-            window['BarcodeDetector'] = barcodeDetectorPolyfill.BarcodeDetectorPolyfill
+            window.BarcodeDetector = barcodeDetectorPolyfill.BarcodeDetectorPolyfill
         }
     </script>
+    <script type="module" src="./js/main.js"></script>
 </body>
 
 </html>

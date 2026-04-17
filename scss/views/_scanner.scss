@@ -1,0 +1,121 @@
+@use '../tokens' as *;
+
+.viewfinder {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+    border-radius: radius(md);
+    background: oklch(10% 0.005 260);
+    border: $hairline solid var(--line-soft);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transform: scale(1.03);
+        transition: opacity var(--dur-md), transform var(--dur-lg) var(--ease);
+    }
+
+    &[data-state='live'] video {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .viewfinder-hint {
+        position: relative;
+        color: var(--ink-mute);
+        font-size: text(sm);
+        transition: opacity var(--dur-sm);
+    }
+
+    .reticle {
+        position: absolute;
+        inset: 14%;
+        pointer-events: none;
+        opacity: 0;
+        transform: scale(0.94);
+        transition: opacity var(--dur-md), transform var(--dur-md) var(--ease);
+    }
+
+    .reticle-corner {
+        position: absolute;
+        width: 1.625rem;
+        height: 1.625rem;
+        border: $focus-width solid var(--accent);
+        box-shadow: 0 0 0.875rem color-mix(in oklab, var(--accent) 60%, transparent);
+
+        &[data-pos='tl'] {
+            top: 0;
+            left: 0;
+            border-right: 0;
+            border-bottom: 0;
+            border-top-left-radius: radius(md);
+        }
+
+        &[data-pos='tr'] {
+            top: 0;
+            right: 0;
+            border-left: 0;
+            border-bottom: 0;
+            border-top-right-radius: radius(md);
+        }
+
+        &[data-pos='bl'] {
+            bottom: 0;
+            left: 0;
+            border-right: 0;
+            border-top: 0;
+            border-bottom-left-radius: radius(md);
+        }
+
+        &[data-pos='br'] {
+            bottom: 0;
+            right: 0;
+            border-left: 0;
+            border-top: 0;
+            border-bottom-right-radius: radius(md);
+        }
+    }
+
+    .reticle-beam {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        height: $focus-width;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        box-shadow: 0 0 1rem var(--accent);
+        animation: beam-sweep 2.2s var(--ease) infinite;
+    }
+
+    &[data-state='live'] .viewfinder-hint {
+        opacity: 0;
+    }
+
+    &[data-state='live'] .reticle {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes beam-sweep {
+    0%, 100% { transform: translateY(-80%); opacity: 0.25; }
+    50%      { transform: translateY(80%); opacity: 1; }
+}
+
+.scanner-controls {
+    display: flex;
+    gap: spacing(2);
+    flex-wrap: wrap;
+
+    .btn {
+        flex: 1 1 auto;
+    }
+}

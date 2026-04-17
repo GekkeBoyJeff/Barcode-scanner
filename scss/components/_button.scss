@@ -1,0 +1,126 @@
+@use '../tokens' as *;
+@use '../mixins' as *;
+
+// Base button component.
+.button,
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: spacing(2);
+    padding: spacing(2) spacing(4);
+    height: 2.5rem;
+    border-radius: radius(md);
+    font-weight: 500;
+    font-size: text(sm);
+    letter-spacing: -0.005em;
+    white-space: nowrap;
+    transition:
+        transform var(--dur-xs),
+        background var(--dur-sm),
+        color var(--dur-sm),
+        border-color var(--dur-sm),
+        opacity var(--dur-sm),
+        box-shadow var(--dur-sm);
+
+    &:active:not(:disabled) {
+        transform: scale(0.97);
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
+    }
+
+    // Semantic visual variants.
+    &.is-primary,
+    &.btn-primary {
+        background: var(--accent);
+        color: var(--accent-ink);
+        box-shadow: 0 0.375rem 1.25rem color-mix(in oklab, var(--accent) 30%, transparent);
+
+        &:hover:not(:disabled) {
+            filter: brightness(1.05);
+            box-shadow: 0 0.625rem 1.75rem color-mix(in oklab, var(--accent) 40%, transparent);
+        }
+    }
+
+    &.is-ghost,
+    &.btn-ghost {
+        background: var(--bg-elev-2);
+        color: var(--ink);
+        border: $hairline solid var(--line);
+
+        &:hover:not(:disabled) {
+            background: var(--bg-elev);
+            border-color: color-mix(in oklab, var(--ink) 24%, var(--line));
+        }
+    }
+
+    &.is-quiet,
+    &.btn-quiet {
+        background: transparent;
+        color: var(--ink-dim);
+        padding: spacing(1) spacing(3);
+        height: auto;
+        font-size: text(xs);
+
+        &:hover:not(:disabled) {
+            color: var(--ink);
+            background: var(--bg-elev-2);
+        }
+    }
+
+    &.is-icon,
+    &.btn-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+        padding: 0;
+        border-radius: radius(md);
+        display: grid;
+        place-items: center;
+        color: var(--ink-dim);
+        background: transparent;
+
+        &:hover:not(:disabled) {
+            color: var(--ink);
+            background: var(--bg-elev-2);
+        }
+    }
+}
+
+// Floating action style, reusable as `.button.is-fab` and legacy `.fab`.
+.button.is-fab,
+.fab {
+    position: fixed;
+    bottom: calc(#{spacing(4)} + env(safe-area-inset-bottom));
+    right: spacing(4);
+    display: inline-flex;
+    align-items: center;
+    gap: spacing(2);
+    padding: spacing(3) spacing(4);
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-radius: radius(full);
+    font-weight: 600;
+    font-size: text(sm);
+    box-shadow: 0 0.875rem 2rem color-mix(in oklab, var(--accent) 35%, transparent);
+    z-index: z(overlay);
+    transition: transform var(--dur-xs);
+
+    &:hover {
+        transform: translateY(-0.125rem);
+    }
+
+    &:active {
+        transform: scale(0.96);
+    }
+
+    &:focus-visible {
+        @include focus-ring(var(--ink));
+    }
+}

@@ -1,0 +1,674 @@
+@use '../tokens' as *;
+
+.view-product {
+    animation: view-rise var(--dur-md) var(--ease) both;
+
+    > * {
+        animation: block-rise var(--dur-md) var(--ease) both;
+    }
+}
+
+// Stagger each section to avoid the whole product screen popping in at once.
+@for $i from 1 through 10 {
+    .view-product > *:nth-child(#{$i}) {
+        animation-delay: #{($i - 1) * 60ms};
+    }
+}
+
+.product-head {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(1);
+
+    .product-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: spacing(1) spacing(3);
+        color: var(--ink-mute);
+    }
+
+    .product-name {
+        font-size: text(xl);
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        font-weight: 600;
+        margin: spacing(1) 0 0;
+    }
+
+    .product-sub {
+        margin: 0;
+        color: var(--ink-dim);
+        font-size: text(sm);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0 spacing(2);
+        align-items: baseline;
+
+        > span:empty {
+            display: none;
+        }
+    }
+
+    .product-sep {
+        color: var(--ink-mute);
+    }
+
+    .product-generic {
+        color: var(--ink-mute);
+        margin: 0;
+        font-size: text(sm);
+        font-style: italic;
+    }
+
+    .product-actions {
+        display: flex;
+        gap: spacing(2);
+        margin-top: spacing(2);
+    }
+}
+
+.product-media {
+    margin: 0;
+    position: relative;
+    min-height: clamp(18rem, 46dvh, 34rem);
+    border-radius: radius(md);
+    border: $hairline solid var(--line-soft);
+    background: oklch(20% 0.01 260);
+    overflow: hidden;
+
+    .product-media-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: spacing(7) 0;
+        color: var(--ink-mute);
+        font-size: text(xs);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .carousel {
+        display: flex;
+        height: 100%;
+        min-height: inherit;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        touch-action: pan-x;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .carousel-slide {
+        flex: 0 0 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: inherit;
+        height: 100%;
+        scroll-snap-align: start;
+        position: relative;
+        background: oklch(22% 0.01 260);
+        margin: 0;
+
+        img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            margin: auto;
+            padding: spacing(1);
+        }
+    }
+
+    .carousel-caption {
+        position: absolute;
+        left: spacing(2);
+        bottom: spacing(2);
+        padding: spacing(1) spacing(2);
+        border-radius: radius(full);
+        background: color-mix(in oklab, black 60%, transparent);
+        backdrop-filter: blur(0.5rem);
+        color: oklch(98% 0 0);
+        font-size: text(xs);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .carousel-dots {
+        position: absolute;
+        right: spacing(2);
+        bottom: spacing(2);
+        display: flex;
+        gap: spacing(1);
+        padding: spacing(1) spacing(2);
+        background: color-mix(in oklab, black 55%, transparent);
+        backdrop-filter: blur(0.5rem);
+        border-radius: radius(full);
+    }
+
+    .carousel-dot {
+        width: 0.375rem;
+        height: 0.375rem;
+        border-radius: radius(full);
+        background: oklch(85% 0 0 / 0.4);
+        padding: 0;
+        transition: background var(--dur-sm), width var(--dur-sm);
+
+        &[data-active='true'] {
+            background: var(--accent);
+            width: 1.125rem;
+            border-radius: radius(sm);
+        }
+    }
+
+    .carousel-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: radius(full);
+        display: grid;
+        place-items: center;
+        background: color-mix(in oklab, black 55%, transparent);
+        backdrop-filter: blur(0.625rem);
+        color: oklch(98% 0 0);
+        border: $hairline solid color-mix(in oklab, white 14%, transparent);
+        z-index: z(raised);
+        opacity: 0;
+        transition: opacity var(--dur-sm), transform var(--dur-xs);
+
+        &[data-side='prev'] {
+            left: spacing(2);
+        }
+
+        &[data-side='next'] {
+            right: spacing(2);
+        }
+
+        &:active {
+            transform: translateY(-50%) scale(0.92);
+        }
+
+        &[data-disabled='true'] {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    &:hover .carousel-arrow[data-disabled='true'],
+    .carousel-arrow[data-disabled='true']:focus-visible {
+        opacity: 0;
+    }
+
+    &:hover .carousel-arrow,
+    .carousel-arrow:focus-visible {
+        opacity: 1;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .product-media .carousel {
+        cursor: grab;
+
+        &:active {
+            cursor: grabbing;
+        }
+
+        img {
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+    }
+}
+
+@media (hover: none) {
+    .product-media .carousel-arrow {
+        opacity: 0.9;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 32.5rem) {
+    .product-media,
+    .product-media .carousel-slide {
+        min-height: clamp(10rem, 34dvh, 14rem);
+    }
+}
+
+// Verdict card communicates a single headline judgment with contextual reasons.
+.verdict {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    align-items: center;
+    gap: spacing(3);
+    padding: spacing(3) spacing(4);
+    border-radius: radius(md);
+    border: $hairline solid var(--line-soft);
+    background: var(--bg-elev-2);
+    transition: background var(--dur-md), border-color var(--dur-md);
+
+    &[data-kind='good'] {
+        background: color-mix(in oklab, var(--ok) 10%, var(--bg-elev-2));
+        border-color: color-mix(in oklab, var(--ok) 30%, var(--line-soft));
+        --accent-color: oklch(82% 0.16 145);
+    }
+
+    &[data-kind='warn'] {
+        background: color-mix(in oklab, var(--warn) 12%, var(--bg-elev-2));
+        border-color: color-mix(in oklab, var(--warn) 30%, var(--line-soft));
+        --accent-color: oklch(85% 0.17 55);
+    }
+
+    &[data-kind='bad'] {
+        background: color-mix(in oklab, var(--danger) 12%, var(--bg-elev-2));
+        border-color: color-mix(in oklab, var(--danger) 30%, var(--line-soft));
+        --accent-color: oklch(82% 0.22 25);
+    }
+
+    &[data-kind='mute'] {
+        --accent-color: var(--ink-mute);
+    }
+
+    .verdict-icon {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: radius(full);
+        display: grid;
+        place-items: center;
+        background: color-mix(in oklab, var(--accent-color) 18%, transparent);
+        color: var(--accent-color);
+        font-weight: 700;
+        font-size: text(lg);
+        line-height: 1;
+    }
+
+    .verdict-title {
+        margin: 0;
+        color: var(--ink);
+        font-weight: 600;
+        font-size: text(base);
+        letter-spacing: -0.01em;
+        line-height: 1.3;
+    }
+
+    .verdict-reasons {
+        margin: spacing(1) 0 0;
+        color: var(--ink-dim);
+        font-size: text(xs);
+        line-height: 1.4;
+    }
+}
+
+.scores {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(4);
+}
+
+.score-row {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(2);
+    padding-top: spacing(3);
+    border-top: $hairline solid var(--line-soft);
+
+    &:first-child {
+        padding-top: 0;
+        border-top: 0;
+    }
+}
+
+.score-label {
+    color: var(--ink-mute);
+    font-size: text(xs);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.score-verdict {
+    margin: 0;
+    color: var(--ink-dim);
+    font-size: text(sm);
+    text-align: center;
+}
+
+.nutriscore {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: spacing(1);
+}
+
+.nutriscore-seg {
+    height: 1.875rem;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: text(sm);
+    letter-spacing: -0.01em;
+    background: var(--bg-elev);
+    color: var(--ink-mute);
+    border-radius: radius(sm);
+    transition:
+        transform var(--dur-md) var(--ease),
+        background var(--dur-md),
+        color var(--dur-md),
+        box-shadow var(--dur-md);
+
+    &:first-child {
+        border-top-left-radius: radius(md);
+        border-bottom-left-radius: radius(md);
+    }
+
+    &:last-child {
+        border-top-right-radius: radius(md);
+        border-bottom-right-radius: radius(md);
+    }
+}
+
+@each $grade, $color, $ink in (
+    ('A', var(--grade-a), oklch(15% 0.03 145)),
+    ('B', var(--grade-b), oklch(18% 0.03 130)),
+    ('C', var(--grade-c), oklch(22% 0.05 95)),
+    ('D', var(--grade-d), oklch(18% 0.04 55)),
+    ('E', var(--grade-e), oklch(98% 0.01 28))
+) {
+    .nutriscore[data-grade='#{$grade}'] .nutriscore-seg[data-grade='#{$grade}'] {
+        background: #{$color};
+        color: #{$ink};
+        transform: scale(1.25);
+        font-size: text(base);
+        box-shadow:
+            0 0.375rem 1.25rem color-mix(in oklab, #{$color} 45%, transparent),
+            0 0 0 $focus-width color-mix(in oklab, #{$color} 30%, transparent);
+        z-index: z(raised);
+        border-radius: radius(md);
+        animation: score-reveal 0.5s var(--ease) both;
+    }
+}
+
+@keyframes score-reveal {
+    0%   { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
+    60%  { transform: scale(1.32); }
+    100% { transform: scale(1.25); }
+}
+
+.nova {
+    display: flex;
+    align-items: baseline;
+    gap: spacing(3);
+}
+
+.nova-num {
+    font-size: text(2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.score-row-nova[data-grade='1'] .nova-num {
+    color: var(--grade-a);
+}
+
+.score-row-nova[data-grade='2'] .nova-num {
+    color: var(--grade-c);
+}
+
+.score-row-nova[data-grade='3'] .nova-num {
+    color: var(--grade-d);
+}
+
+.score-row-nova[data-grade='4'] .nova-num {
+    color: var(--grade-e);
+}
+
+.nova-note {
+    color: var(--ink-dim);
+    font-size: text(sm);
+}
+
+.eco-grade {
+    align-self: flex-start;
+    font-weight: 700;
+    font-size: text(lg);
+    padding: spacing(1) spacing(3);
+    border-radius: radius(sm);
+    letter-spacing: 0.02em;
+}
+
+@each $grade, $color, $ink in (
+    ('A', var(--grade-a), oklch(15% 0.03 145)),
+    ('B', var(--grade-b), oklch(18% 0.03 130)),
+    ('C', var(--grade-c), oklch(22% 0.05 95)),
+    ('D', var(--grade-d), oklch(18% 0.04 55)),
+    ('E', var(--grade-e), oklch(98% 0.01 28))
+) {
+    .eco-grade[data-grade='#{$grade}'] {
+        background: #{$color};
+        color: #{$ink};
+    }
+}
+
+.nutrition {
+    display: flex;
+    flex-direction: column;
+    gap: spacing(2);
+}
+
+.nutrition-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: spacing(2);
+}
+
+.nutrition-toggle {
+    display: inline-flex;
+    background: var(--bg-elev);
+    border: $hairline solid var(--line-soft);
+    border-radius: radius(sm);
+    padding: 2px;
+    font-size: text(xs);
+
+    button {
+        padding: spacing(1) spacing(2);
+        border-radius: radius(sm);
+        color: var(--ink-mute);
+        transition: color var(--dur-sm), background var(--dur-sm);
+
+        &[aria-pressed='true'] {
+            background: var(--accent);
+            color: var(--accent-ink);
+        }
+    }
+}
+
+.nutrients {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: spacing(1) spacing(4);
+}
+
+.nutrient {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: spacing(2);
+    padding: spacing(1) 0;
+    border-bottom: $hairline solid var(--line-soft);
+
+    &:last-child,
+    &:nth-last-child(2):nth-child(odd) {
+        border-bottom: 0;
+    }
+
+    dt {
+        color: var(--ink-dim);
+        font-size: text(sm);
+    }
+
+    dd {
+        margin: 0;
+        display: flex;
+        align-items: baseline;
+        gap: spacing(1);
+        font-size: text(sm);
+    }
+}
+
+.nutrient-value {
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.nutrient-unit {
+    color: var(--ink-mute);
+    font-size: text(xs);
+}
+
+.nutrient-level {
+    margin-left: spacing(1);
+    font-size: text(xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0 spacing(1);
+    border-radius: radius(sm);
+    font-weight: 600;
+
+    &[data-level='low'] {
+        background: color-mix(in oklab, var(--ok) 20%, transparent);
+        color: oklch(82% 0.16 145);
+    }
+
+    &[data-level='moderate'] {
+        background: color-mix(in oklab, var(--warn) 20%, transparent);
+        color: oklch(88% 0.17 95);
+    }
+
+    &[data-level='high'] {
+        background: color-mix(in oklab, var(--danger) 22%, transparent);
+        color: oklch(82% 0.22 25);
+    }
+}
+
+.allergens {
+    display: flex;
+    gap: spacing(2);
+    align-items: flex-start;
+    padding: spacing(3);
+    border-radius: radius(md);
+    background: color-mix(in oklab, var(--warn) 10%, var(--bg-elev-2));
+    border: $hairline solid color-mix(in oklab, var(--warn) 30%, var(--line-soft));
+    color: var(--ink);
+
+    .allergens-icon {
+        color: oklch(80% 0.18 55);
+        flex-shrink: 0;
+    }
+
+    .allergens-title {
+        margin: 0;
+        color: var(--ink-mute);
+        font-size: text(xs);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .allergens-list {
+        margin: spacing(0) 0 0;
+        font-weight: 500;
+    }
+
+    .allergens-traces {
+        margin: spacing(1) 0 0;
+        font-size: text(sm);
+        color: var(--ink-dim);
+    }
+}
+
+.accordion {
+    background: var(--bg-elev-2);
+    border: $hairline solid var(--line-soft);
+    border-radius: radius(md);
+    padding: spacing(3) spacing(4);
+
+    summary {
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 500;
+        user-select: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &:focus-visible {
+            outline: 0;
+
+            .accordion-icon {
+                box-shadow: 0 0 0 $focus-width color-mix(in oklab, var(--accent) 50%, transparent);
+            }
+        }
+    }
+
+    .accordion-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: radius(full);
+        background: var(--bg);
+        display: grid;
+        place-items: center;
+        font-size: text(lg);
+        line-height: 1;
+        transition: transform var(--dur-md) var(--ease);
+    }
+
+    &[open] .accordion-icon {
+        transform: rotate(45deg);
+    }
+
+    .accordion-body {
+        color: var(--ink-dim);
+        margin-top: spacing(2);
+        font-size: text(sm);
+        line-height: 1.55;
+    }
+}
+
+.product-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing(1) spacing(3);
+    padding-top: spacing(3);
+    border-top: $hairline solid var(--line-soft);
+    color: var(--ink-mute);
+    font-size: text(xs);
+    letter-spacing: 0.02em;
+
+    span:empty {
+        display: none;
+    }
+}
+
+@keyframes block-rise {
+    from { opacity: 0; transform: translateY(0.5rem); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (orientation: portrait) and (max-width: 32.5rem) {
+    .nutrients {
+        grid-template-columns: 1fr;
+    }
+}
