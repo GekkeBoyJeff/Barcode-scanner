@@ -163,9 +163,25 @@ const registerServiceWorker = () => {
 
     // Defer registration until load so startup UI remains responsive.
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch((err) => {
-            log.warn('service worker registration failed', err)
+        let refreshing = false
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return
+            refreshing = true
+            window.location.reload()
         })
+
+        navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+            .then((reg) => {
+                const triggerUpdate = () => reg.update().catch(() => {})
+                triggerUpdate()
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden) triggerUpdate()
+                })
+                window.addEventListener('focus', triggerUpdate)
+            })
+            .catch((err) => {
+                log.warn('service worker registration failed', err)
+            })
     })
 }
 

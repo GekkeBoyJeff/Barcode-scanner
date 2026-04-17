@@ -1,16 +1,8 @@
 // Service worker — offline shell + runtime cache for product media.
-// Three strategies:
-//   1. Static shell (HTML/CSS/JS): cache-first so installed PWAs open instantly.
-//   2. Product images (images.openfoodfacts.org): stale-while-revalidate so the
-//      second visit is instant but content still refreshes in the background.
-//   3. Everything else (API calls): network-only — we never want to serve stale
-//      nutrition data from a cache.
-//
-// Bump CACHE_VERSION to force all clients to discard the old shell after a deploy.
+// Uses stable cache names so no URL versioning is needed.
 
-const CACHE_VERSION = 'v1'
-const SHELL_CACHE = `barcode-shell-${CACHE_VERSION}`
-const MEDIA_CACHE = `barcode-media-${CACHE_VERSION}`
+const SHELL_CACHE = 'barcode-shell'
+const MEDIA_CACHE = 'barcode-media'
 
 const SHELL_ASSETS = [
     './',
@@ -47,7 +39,12 @@ self.addEventListener('fetch', (event) => {
     const url = new URL(req.url)
 
     if (url.origin === self.location.origin) {
-        event.respondWith(cacheFirst(SHELL_CACHE, req))
+        if (req.mode === 'navigate') {
+            event.respondWith(networkFirst(SHELL_CACHE, req, './index.html'))
+            return
+        }
+
+        event.respondWith(networkFirst(SHELL_CACHE, req))
         return
     }
 
@@ -56,17 +53,16 @@ self.addEventListener('fetch', (event) => {
     }
 })
 
-const cacheFirst = async (cacheName, req) => {
+const networkFirst = async (cacheName, req, fallbackKey) => {
     const cache = await caches.open(cacheName)
-    const hit = await cache.match(req)
-    if (hit) return hit
     try {
         const res = await fetch(req)
         if (res.ok) cache.put(req, res.clone())
         return res
     } catch {
-        // Navigational requests without connectivity fall through to the cached shell.
-        return (await cache.match('./index.html')) || Response.error()
+        const hit = await cache.match(req)
+        if (hit) return hit
+        return (await cache.match(fallbackKey)) || Response.error()
     }
 }
 
